@@ -1,16 +1,19 @@
 package com.makentoshe.vkinternship
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     private val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
     private val permissionRequestCode = 1
+    private val directoryPathRequest = 2
 
     private val bottomBarUi by lazy { BottomBarUi(window.decorView) }
 
@@ -35,9 +38,7 @@ class MainActivity : AppCompatActivity() {
         return permissionState == PackageManager.PERMISSION_GRANTED
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == permissionRequestCode) {
@@ -45,14 +46,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onReadExternalStoragePermissionResult(
-        permissions: Array<out String>, grantResults: IntArray
-    ) {
+    private fun onReadExternalStoragePermissionResult(permissions: Array<out String>, grantResults: IntArray) {
         //check all permissions was granted
         permissions.forEachIndexed { index, _ ->
             if (grantResults[index] == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(this, "Permissions was denied", Toast.LENGTH_LONG).show()
-                return
+                return Toast.makeText(this, "Permissions was denied", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -60,6 +58,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayDirectoryChooseDialog() {
-        //start dialog
+        val intent = Intent(this, DirectoryChooseActivity::class.java)
+        startActivityForResult(intent, directoryPathRequest)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == directoryPathRequest) {
+            onDirectoryPathChooseResult(resultCode, data!!)
+        }
+    }
+
+    private fun onDirectoryPathChooseResult(resultCode: Int, data: Intent) {
+        if (!data.hasExtra(String::class.java.simpleName)) return
+        val path = data.getStringExtra(String::class.java.simpleName)
+
+        val directory = File(path).also {
+            //returns from method if current path is not a directory
+            if (!it.isDirectory) return
+        }
+
+        displayPlayerActivity(directory)
+    }
+
+    private fun displayPlayerActivity(directory: File) {
+        //TODO
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">VkInternship</string>
+    <string name="dialog_edittext_hint">/storage/emulated/0/</string>
 </resources>
