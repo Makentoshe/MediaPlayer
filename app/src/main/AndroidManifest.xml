@@ -21,6 +21,7 @@
         <activity android:name=".DirectoryChooseActivity" />
 
         <service android:name=".player.PlayerService" />
+        <receiver android:name=".player.PlayerBroadcastReceiver" />
     </application>
 
 </manifest>

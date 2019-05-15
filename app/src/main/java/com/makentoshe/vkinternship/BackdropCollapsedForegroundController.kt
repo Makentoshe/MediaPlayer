@@ -6,11 +6,16 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.player.PlayerServiceListenerController
 
 /**
  * Controller for the foreground layout while it is collapsed.
  */
-class BackdropCollapsedForegroundController(private val behavior: BackdropBehavior, private val foreground: View) {
+class BackdropCollapsedForegroundController(
+    private val behavior: BackdropBehavior,
+    private val foreground: View,
+    controller: PlayerServiceListenerController
+) {
 
     private val context = foreground.context
 

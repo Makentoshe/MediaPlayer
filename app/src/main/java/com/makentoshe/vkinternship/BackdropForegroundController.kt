@@ -6,21 +6,26 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.player.PlayerServiceListenerController
 
 /**
  * Controller for the foreground layout of the backdrop layout
  */
-class BackdropForegroundController(private val behavior: BackdropBehavior, private val foreground: View) {
+class BackdropForegroundController(
+    private val behavior: BackdropBehavior,
+    private val foreground: View,
+    private val controller: PlayerServiceListenerController
+) {
 
     /**
      * Controller for the foreground layout while it is expanded
      */
-    private val expandedForegroundController = BackdropExpandedForegroundController(behavior, foreground)
+    private val expandedForegroundController = BackdropExpandedForegroundController(behavior, foreground, controller)
 
     /**
      * Controller for the foreground layout while it is collapsed
      */
-    private val collapsedForegroundController = BackdropCollapsedForegroundController(behavior, foreground)
+    private val collapsedForegroundController = BackdropCollapsedForegroundController(behavior, foreground, controller)
 
     init {
         behavior.addOnDropListener { state ->

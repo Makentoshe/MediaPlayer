@@ -10,12 +10,18 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
+import com.makentoshe.vkinternship.player.PlayerServiceListener
+import com.makentoshe.vkinternship.player.PlayerServiceListenerController
 import kotlin.math.roundToInt
 
 /**
  * Controller for the foreground layout while it is expanded
  */
-class BackdropExpandedForegroundController(private val behavior: BackdropBehavior, private val foreground: View) {
+class BackdropExpandedForegroundController(
+    private val behavior: BackdropBehavior,
+    private val foreground: View,
+    private val controller: PlayerServiceListenerController
+) {
 
     private val context = foreground.context
 
@@ -50,6 +56,16 @@ class BackdropExpandedForegroundController(private val behavior: BackdropBehavio
         foreground.findViewById<View>(R.id.activity_main_foreground_show_play).setOnClickListener {
             playerServiceController.pausePlaying(context)
         }
+
+        controller.addListener(object : PlayerServiceListener{
+            override fun onPlayerPause() {
+                println("Paused")
+            }
+
+            override fun onPlayerPlay() {
+                println("Play")
+            }
+        })
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.makentoshe.vkinternship
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
@@ -12,7 +13,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import com.makentoshe.vkinternship.backdrop.getBackdropBehavior
 import com.makentoshe.vkinternship.player.Commands
-import com.makentoshe.vkinternship.player.PlayerService
+import com.makentoshe.vkinternship.player.PlayerBroadcastReceiver
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import java.io.File
 
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var foregroundController: BackdropForegroundController
 
+    private val playerBroadcastReceiver = PlayerBroadcastReceiver()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         //foreground layout controller
         val coordinatorLayout = findViewById<CoordinatorLayout>(R.id.activity_main_coordinator)
         val behavior = coordinatorLayout.getBackdropBehavior()
-        foregroundController = BackdropForegroundController(behavior, foreground)
+        foregroundController = BackdropForegroundController(behavior, foreground, playerBroadcastReceiver)
 
         //is first creation?
         if (savedInstanceState == null) foreground.visibility = View.GONE
@@ -113,4 +116,14 @@ class MainActivity : AppCompatActivity() {
         foregroundController.onUpdate()
     }
 
+    override fun onStart() {
+        super.onStart()
+        val intentFilter = IntentFilter(Commands::class.java.simpleName)
+        registerReceiver(playerBroadcastReceiver, intentFilter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(playerBroadcastReceiver)
+    }
 }
