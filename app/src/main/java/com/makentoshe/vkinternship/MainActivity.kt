@@ -85,15 +85,23 @@ class MainActivity : AppCompatActivity() {
         if (!data.hasExtra(String::class.java.simpleName)) return
         val path = data.getStringExtra(String::class.java.simpleName)
 
-        val directory = File(path).also {
-            //returns from method if current path is not a directory
-            if (!it.isDirectory) {
-                //add files check
-                return
-            }
+        val directory = File(path)
+
+        //returns from method if current path is not a directory
+        if (!directory.isDirectory) {
+            val message = "Выбраной директории не существует, или она является файлом"
+            return Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        }
+        if (!hasAtLeastOneMP3File(directory)) {
+            val message = "В выбранной директории отсутствуют mp3 файлы"
+            return Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         }
 
         displayPlayer(directory)
+    }
+
+    private fun hasAtLeastOneMP3File(directory: File): Boolean {
+        return directory.listFiles().map { it.extension == "mp3" }.isNotEmpty()
     }
 
     private fun displayPlayer(directory: File) = foregroundController.onDisplay(this)
