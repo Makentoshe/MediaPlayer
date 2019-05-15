@@ -12,4 +12,15 @@ class PlayerServiceController {
         context.startService(intent)
     }
 
+    fun startPlaying(context: Context) {
+        val intent = Intent(context, PlayerService::class.java)
+        intent.putExtra(Commands::class.java.simpleName, Commands.PlayCommand())
+        context.startService(intent)
+    }
+
+    fun pausePlaying(context: Context) {
+        val intent = Intent(context, PlayerService::class.java)
+        intent.putExtra(Commands::class.java.simpleName, Commands.PauseCommand())
+        context.startService(intent)
+    }
 }
