@@ -28,20 +28,29 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/activity_main_foreground_show_repeat"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:id="@+id/activity_main_foreground_show_play"
+        android:layout_width="82dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:layout_gravity="center"
-            android:id="@+id/activity_main_foreground_show_repeat_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_repeat_24" />
+        <com.google.android.material.card.MaterialCardView
+            app:cardCornerRadius="36dp"
+            app:cardBackgroundColor="@color/MaterialLightBlue700"
+            android:layout_width="72dp"
+            android:layout_height="72dp">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/activity_main_foreground_show_play_icon"
+                android:src="@drawable/ic_pause_48"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+            
+        </com.google.android.material.card.MaterialCardView>
 
     </FrameLayout>
 
@@ -70,6 +79,24 @@
                 />
 
         </com.google.android.material.card.MaterialCardView>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/activity_main_foreground_show_repeat"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/activity_main_foreground_show_repeat_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_repeat_24" />
 
     </FrameLayout>
 
