@@ -116,3 +116,12 @@ class BackdropBehavior(context: Context, attrs: AttributeSet) : CoordinatorLayou
         backdropListenerController.notify(DropState.CLOSE)
     }
 }
+
+fun CoordinatorLayout.getBackdropBehavior(): BackdropBehavior {
+    val backgroundChild = getChildAt(0)
+    val foregroundChild = getChildAt(1)
+    val params = foregroundChild.layoutParams as CoordinatorLayout.LayoutParams
+    val behavior = params.behavior as BackdropBehavior
+    behavior.setLayouts(foregroundChild, backgroundChild)
+    return behavior
+}
