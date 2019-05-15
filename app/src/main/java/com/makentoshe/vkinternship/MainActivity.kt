@@ -11,6 +11,9 @@ import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import com.makentoshe.vkinternship.backdrop.getBackdropBehavior
+import com.makentoshe.vkinternship.player.Commands
+import com.makentoshe.vkinternship.player.PlayerService
+import com.makentoshe.vkinternship.player.PlayerServiceController
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -104,9 +107,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayPlayer(data: Intent) {
-        val intent = Intent(this, PlayerService::class.java)
-        intent.putExtra(String::class.java.simpleName, data.getStringExtra(String::class.java.simpleName))
-        startService(intent)
+        val controller = PlayerServiceController()
+        val file = File(data.getStringExtra(String::class.java.simpleName))
+        controller.selectNewDirectory(this, file)
         foregroundController.onUpdate()
     }
 

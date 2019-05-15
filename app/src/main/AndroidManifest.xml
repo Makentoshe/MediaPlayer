@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".DirectoryChooseActivity" />
 
-        <service android:name=".PlayerService" />
+        <service android:name=".player.PlayerService" />
     </application>
 
 </manifest>
