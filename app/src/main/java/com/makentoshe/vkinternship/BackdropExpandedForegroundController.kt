@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.player.PlayerServiceController
 import kotlin.math.roundToInt
 
 /**
@@ -17,6 +18,8 @@ import kotlin.math.roundToInt
 class BackdropExpandedForegroundController(private val behavior: BackdropBehavior, private val foreground: View) {
 
     private val context = foreground.context
+
+    private val playerServiceController = PlayerServiceController()
 
     /**
      * Main layout displays when the foreground layout is in expanded state.
@@ -43,6 +46,9 @@ class BackdropExpandedForegroundController(private val behavior: BackdropBehavio
         //set on click listener for dropdown arrow
         foreground.findViewById<View>(R.id.activity_main_foreground_show_dropdown).setOnClickListener {
             behavior.open(true)
+        }
+        foreground.findViewById<View>(R.id.activity_main_foreground_show_play).setOnClickListener {
+            playerServiceController.pausePlaying(context)
         }
     }
 

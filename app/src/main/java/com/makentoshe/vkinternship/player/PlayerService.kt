@@ -3,8 +3,10 @@ package com.makentoshe.vkinternship.player
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.ExoPlayerFactory
 import com.makentoshe.vkinternship.Mp3FilesHolder
-import java.io.File
+
 
 /**
  * Service for starting and holding audio player.
@@ -15,6 +17,12 @@ class PlayerService : Service() {
      * Contains all audio files.
      */
     private lateinit var filesHolder: Mp3FilesHolder
+
+    private lateinit var mediaPlayer: ExoPlayer
+
+    override fun onCreate() {
+        mediaPlayer = ExoPlayerFactory.newSimpleInstance(this)
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //stop service if intent is null or does not contains command
@@ -27,10 +35,10 @@ class PlayerService : Service() {
 
         when (command) {
             is Commands.NewCommand -> onNewCommand(command)
-            is Commands.PlayCommand -> onPlayCommand(command)
-            is Commands.PauseCommand -> onPauseCommand(command)
-            is Commands.NextCommand -> onNextCommand(command)
-            is Commands.PrevCommand -> onPrevCommand(command)
+            is Commands.PlayCommand -> onPlayCommand()
+            is Commands.PauseCommand -> onPauseCommand()
+            is Commands.NextCommand -> onNextCommand()
+            is Commands.PrevCommand -> onPrevCommand()
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -42,22 +50,27 @@ class PlayerService : Service() {
 
     private fun onNewCommand(command: Commands.NewCommand) {
         filesHolder = Mp3FilesHolder(command.directory)
-        println("New directory ${command.directory}")
+        val bytes = filesHolder.current.readBytes()
+        val mediaSource = ByteArrayMediaSourceFactory(bytes).build()
+        mediaPlayer.prepare(mediaSource)
+
+        onPlayCommand()
     }
 
-    private fun onPlayCommand(command: Commands.PlayCommand) {
-        println("Play")
+    private fun onPlayCommand() {
+        mediaPlayer.playWhenReady = true
     }
 
-    private fun onPauseCommand(command: Commands.PauseCommand) {
-        println("Pause")
+    private fun onPauseCommand() {
+        mediaPlayer.playWhenReady = false
     }
 
-    private fun onNextCommand(command: Commands.NextCommand) {
+    private fun onNextCommand() {
         println("Next")
     }
 
-    private fun onPrevCommand(command: Commands.PrevCommand) {
+    private fun onPrevCommand() {
         println("Prev")
     }
 }
+
