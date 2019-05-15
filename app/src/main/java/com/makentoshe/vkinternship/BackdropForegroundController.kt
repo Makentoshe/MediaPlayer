@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PorterDuff
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -12,9 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
-import android.util.TypedValue
 import kotlin.math.roundToInt
-
 
 /**
  * Controller for the foreground layout of the backdrop layout
@@ -48,6 +47,11 @@ class BackdropForegroundController(private val behavior: BackdropBehavior, priva
     }
 
     private fun initForegroundShow(context: Context) {
+        val color = ContextCompat.getColor(context, R.color.MaterialLightBlue700)
+
+        foreground.findViewById<ImageView>(R.id.activity_main_foreground_show_repeat_icon)
+            .setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+
         //set color filter for white dropdown arrow
         foreground.findViewById<ImageView>(R.id.activity_main_foreground_show_dropdown_icon)
             .setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP)
@@ -58,16 +62,20 @@ class BackdropForegroundController(private val behavior: BackdropBehavior, priva
     }
 
     private fun initForegroundHide(context: Context) {
-        val color = ContextCompat.getColor(
-            context,
-            R.color.MaterialLightBlue700
-        )
-        foreground.findViewById<ImageView>(R.id.pause).setColorFilter(color,
-            PorterDuff.Mode.SRC_ATOP
-        )
-        foreground.findViewById<ImageView>(R.id.skip).setColorFilter(color,
-            PorterDuff.Mode.SRC_ATOP
-        )
+        val color = ContextCompat.getColor(context, R.color.MaterialLightBlue700)
+
+        foreground.findViewById<ImageView>(R.id.pause).apply {
+            setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+            setOnClickListener {
+                println("Pause")
+            }
+        }
+        foreground.findViewById<ImageView>(R.id.skip).apply {
+            setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+            setOnClickListener {
+                println("Skip")
+            }
+        }
     }
 
     /**

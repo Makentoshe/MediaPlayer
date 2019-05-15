@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.View.NO_ID
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.makentoshe.vkinternship.backdrop.BackdropBehavior.DropState.CLOSE
+import com.makentoshe.vkinternship.backdrop.BackdropBehavior.DropState.OPEN
 
 /**
  * Main class imitates really backdrop layout using [CoordinatorLayout] and two child layouts.
@@ -55,7 +57,8 @@ class BackdropBehavior(context: Context, attrs: AttributeSet) : CoordinatorLayou
     /**
      * Contains current backdrop layout state. At start initializes with [DropState.CLOSE] value.
      */
-    private var dropState: DropState = DropState.CLOSE
+    var dropState: DropState = DropState.CLOSE
+        private set
 
     override fun onSaveInstanceState(parent: CoordinatorLayout, child: View): Parcelable {
         return saveRestoreMechanism.onSave(dropState)

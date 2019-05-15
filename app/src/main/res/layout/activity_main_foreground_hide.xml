@@ -58,7 +58,7 @@
         android:id="@+id/pause"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:padding="12dp"
+        android:padding="16dp"
         android:src="@drawable/ic_pause_48"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/skip"
@@ -69,6 +69,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:src="@drawable/ic_skip_next_48"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
