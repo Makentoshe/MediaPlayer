@@ -2,18 +2,14 @@ package com.makentoshe.vkinternship
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Point
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.view.updateLayoutParams
-import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.backdrop.getBackdropBehavior
 import java.io.File
 
@@ -25,45 +21,36 @@ class MainActivity : AppCompatActivity() {
 
     private val folderButton by lazy { findViewById<Button>(R.id.get_folder_button) }
 
-    private val coordinatorLayout by lazy {
-        findViewById<CoordinatorLayout>(R.id.activity_main_coordinator)
-    }
+    private val foreground by lazy { findViewById<CardView>(R.id.activity_main_foreground) }
 
-    private val foreground by lazy {
-        findViewById<CardView>(R.id.activity_main_foreground)
+    private val foregroundController by lazy {
+        val coordinatorLayout = findViewById<CoordinatorLayout>(R.id.activity_main_coordinator)
+        val behavior = coordinatorLayout.getBackdropBehavior()
+        BackdropForegroundController(behavior, foreground)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //init foreground layout behavior
+        foregroundController.init(this)
+        //is first creation?
+        if (savedInstanceState == null) {
+            foreground.visibility = View.GONE
+        }
 
         folderButton.setOnClickListener {
             if (checkPermissionsGranted()) displayDirectoryChooseDialog() else grantPermissions()
         }
-
-        foreground.visibility = View.GONE
-        val behavior = coordinatorLayout.getBackdropBehavior()
-        behavior.addOnDropListener { state ->
-            //background visible
-            if (state == BackdropBehavior.DropState.OPEN) {
-                foreground.setOnTouchListener(null)
-                foreground.setOnClickListener { behavior.close(true) }
-            }
-            //background hide
-            if (state == BackdropBehavior.DropState.CLOSE) {
-                foreground.setOnClickListener(null)
-                setOnTouchListenerForeground()
-            }
-        }
-    }
-
-    private fun grantPermissions() {
-        ActivityCompat.requestPermissions(this, arrayOf(permission), permissionRequestCode)
     }
 
     private fun checkPermissionsGranted(): Boolean {
         val permissionState = ActivityCompat.checkSelfPermission(this, permission)
         return permissionState == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun grantPermissions() {
+        ActivityCompat.requestPermissions(this, arrayOf(permission), permissionRequestCode)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -74,9 +61,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun onReadExternalStoragePermissionResult(permissions: Array<out String>, grantResults: IntArray) {
         //check all permissions was granted
-        permissions.forEachIndexed { index, _ ->
+        permissions.forEachIndexed { index, permission ->
             if (grantResults[index] == PackageManager.PERMISSION_DENIED) {
-                return Toast.makeText(this, "Permissions was denied", Toast.LENGTH_LONG).show()
+                return Toast.makeText(this, "Permission $permission was denied", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -100,33 +87,15 @@ class MainActivity : AppCompatActivity() {
 
         val directory = File(path).also {
             //returns from method if current path is not a directory
-            if (!it.isDirectory) return
-        }
-
-        displayPlayerActivity(directory)
-    }
-
-    private fun displayPlayerActivity(directory: File) {
-        coordinatorLayout.getBackdropBehavior().close(false)
-        foreground.updateLayoutParams<ViewGroup.LayoutParams> {
-            val point = Point()
-            windowManager.defaultDisplay.getSize(point)
-            height = point.y
-        }
-        foreground.visibility = View.VISIBLE
-        setOnTouchListenerForeground()
-    }
-
-    private fun setOnTouchListenerForeground() {
-        foreground.setOnTouchListener(object : OnSwipeTouchListener(this) {
-            override fun onSwipeRight() = Unit
-            override fun onSwipeLeft() = Unit
-            override fun onSwipeTop() = Unit
-
-            override fun onSwipeBottom() {
-                coordinatorLayout.getBackdropBehavior().open(true)
+            if (!it.isDirectory) {
+                //add files check
+                return
             }
-        })
+        }
+
+        displayPlayer(directory)
     }
+
+    private fun displayPlayer(directory: File) = foregroundController.onDisplay(this)
 
 }

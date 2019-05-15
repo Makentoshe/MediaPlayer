@@ -4,9 +4,51 @@
     android:id="@+id/activity_main_foreground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@android:color/holo_purple"
-    app:cardCornerRadius="16dp"
     android:layout_marginBottom="-16dp"
+    app:cardCornerRadius="16dp"
     app:layout_behavior="com.makentoshe.vkinternship.backdrop.BackdropBehavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp">
+
+        <!-- Layout when foreground is shown -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_main_foreground_show"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:id="@+id/activity_main_foreground_show_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/activity_main_foreground_show_dropdown_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_dropdown_24" />
+
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Layout when foreground is collapsed -->
+        <include
+            layout="@layout/activity_main_foreground_hide"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
