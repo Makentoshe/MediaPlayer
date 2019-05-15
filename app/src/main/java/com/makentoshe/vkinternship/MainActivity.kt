@@ -23,22 +23,21 @@ class MainActivity : AppCompatActivity() {
 
     private val foreground by lazy { findViewById<CardView>(R.id.activity_main_foreground) }
 
-    private val foregroundController by lazy {
-        val coordinatorLayout = findViewById<CoordinatorLayout>(R.id.activity_main_coordinator)
-        val behavior = coordinatorLayout.getBackdropBehavior()
-        BackdropForegroundController(behavior, foreground)
-    }
+    private lateinit var foregroundController: BackdropForegroundController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //init foreground layout behavior
-        foregroundController.init(this)
-        //is first creation?
-        if (savedInstanceState == null) {
-            foreground.visibility = View.GONE
-        }
 
+        //foreground layout controller
+        val coordinatorLayout = findViewById<CoordinatorLayout>(R.id.activity_main_coordinator)
+        val behavior = coordinatorLayout.getBackdropBehavior()
+        foregroundController = BackdropForegroundController(behavior, foreground)
+
+        //is first creation?
+        if (savedInstanceState == null) foreground.visibility = View.GONE
+
+        //background layout controller
         folderButton.setOnClickListener {
             if (checkPermissionsGranted()) displayDirectoryChooseDialog() else grantPermissions()
         }
@@ -97,13 +96,18 @@ class MainActivity : AppCompatActivity() {
             return Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         }
 
-        displayPlayer(directory)
+        displayPlayer(data)
     }
 
     private fun hasAtLeastOneMP3File(directory: File): Boolean {
-        return directory.listFiles().map { it.extension == "mp3" }.isNotEmpty()
+        return directory.listFiles().any { it.extension == "mp3" }
     }
 
-    private fun displayPlayer(directory: File) = foregroundController.onDisplay(this)
+    private fun displayPlayer(data: Intent) {
+        val intent = Intent(this, PlayerService::class.java)
+        intent.putExtra(String::class.java.simpleName, data.getStringExtra(String::class.java.simpleName))
+        startService(intent)
+        foregroundController.onUpdate()
+    }
 
 }

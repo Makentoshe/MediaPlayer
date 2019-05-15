@@ -19,6 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".DirectoryChooseActivity" />
+
+        <service android:name=".PlayerService" />
     </application>
 
 </manifest>
