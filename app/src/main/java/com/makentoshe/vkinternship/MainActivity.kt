@@ -37,11 +37,6 @@ class MainActivity : AppCompatActivity() {
         val background = findViewById<View>(R.id.activity_main_background)
 
         with(behavior) {
-
-            // Attach your back layout to behavior.
-            // BackDropBehavior will find the toolbar itself.
-            attachBackLayout(R.id.activity_main_background)
-
             // Add listener
             addOnDropListener {
                 println(it)

@@ -4,43 +4,58 @@ import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.IdRes
+import android.view.View.NO_ID
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 
+/**
+ * Main class imitates really backdrop layout using [CoordinatorLayout] and two child layouts.
+ */
 class BackdropBehavior(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<View>(context, attrs) {
 
+    /**
+     * Class for saving and restoring backdrop layout state.
+     */
     private val saveRestoreMechanism = BackdropSaveRestoreMechanism(DropState.CLOSE)
 
+    /**
+     * Controller for listeners management.
+     */
     private val backdropListenerController = BackdropListenerController()
 
+    /**
+     * Data class contains foreground and background layouts
+     */
+    private lateinit var backdropLayouts: BackdropLayouts
+
+    /**
+     * Backdrop layouts controller. Performs any actions with them such as close or open.
+     */
     private lateinit var backdropLayoutsController: BackdropLayoutsController
 
+    /**
+     * Main method than must be called before starting work with the instance.
+     */
     fun setLayouts(foreground: View, background: View) {
-        backdropLayoutsController = BackdropLayoutsController(foreground, background)
+        if (foreground.id == NO_ID) throw IllegalArgumentException()
+        if (background.id == NO_ID) throw IllegalArgumentException()
+
+        backdropLayouts = BackdropLayouts(foreground, background)
+        backdropLayoutsController = BackdropLayoutsController(backdropLayouts)
     }
 
+    /**
+     * Possible backdrop layout states.
+     * [OPEN] - the background is visible
+     * [CLOSE] - the background hides below the foreground.
+     */
     enum class DropState {
         OPEN, CLOSE
     }
 
-    companion object {
-        private const val DEFAULT_DURATION = 300L
-        private const val WITHOUT_DURATION = 0L
-    }
-
-    private var backLayoutId: Int? = null
-
-    private var backLayout: ViewGroup? = null
-    private var frontLayout: View? = null
-
-//    private var closedIconId: Int = R.drawable.ic_menu
-//    private var openedIconRes: Int = R.drawable.ic_close
-
+    /**
+     * Contains current backdrop layout state. At start initializes with [DropState.CLOSE] value.
+     */
     private var dropState: DropState = DropState.CLOSE
-
-    private var needToInitializing = true
-
 
     override fun onSaveInstanceState(parent: CoordinatorLayout, child: View): Parcelable {
         return saveRestoreMechanism.onSave(dropState)
@@ -52,127 +67,52 @@ class BackdropBehavior(context: Context, attrs: AttributeSet) : CoordinatorLayou
     }
 
     override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
-        if (backLayoutId == null) return false
-
-        return dependency.id == backLayoutId
+        return backdropLayoutsController.isDependsOn(dependency)
     }
 
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
-        //tries to match the foreground layout
-        matchForegroundLayout(child)
-        //tries to match the background layout
-        matchBackgroundLayout(dependency)
-
-        if (frontLayout != null && backLayout != null && needToInitializing) {
-            initViews(parent, frontLayout!!, backLayout!!)
-        }
-
+        backdropLayoutsController.onDependentViewChanged(parent, dropState)
         return super.onDependentViewChanged(parent, child, dependency)
     }
 
     /**
-     * Matches [view] to the [frontLayout] or throws an exception.
+     * Adds a listener for the backdrop events.
      */
-    private fun matchForegroundLayout(view: View) {
-        frontLayout = view as? ViewGroup ?: throw IllegalArgumentException("BackLayout must extend a ViewGroup")
-    }
-
-    private fun matchBackgroundLayout(view: View) {
-        if (view.id == backLayoutId) {
-            backLayout = view as? ViewGroup ?: throw IllegalAccessException("backLayoutId doesn't match back layout")
-        }
-    }
-
-//    fun setOpenedIcon(@IdRes iconRes: Int) {
-//        this.openedIconRes = iconRes
-//    }
-//
-//    fun setClosedIcon(@IdRes iconRes: Int) {
-//        this.closedIconId = iconRes
-//    }
-
-    fun attachBackLayout(@IdRes appBarLayoutId: Int) {
-        this.backLayoutId = appBarLayoutId
-    }
-
     fun addOnDropListener(listener: (DropState) -> Unit) {
         backdropListenerController.addListener(listener)
     }
 
+    /**
+     * Removes a listener for the backdrop events.
+     */
     fun removeDropListener(listener: (DropState) -> Unit) {
         backdropListenerController.removeListener(listener)
     }
 
+    /**
+     * Remove all listeners for the backdrop events.
+     */
     fun clearAllListeners() {
         backdropListenerController.clear()
     }
 
-    fun open(withAnimation: Boolean = true): Boolean = if (dropState == DropState.OPEN) {
-        false
-    } else {
+    /**
+     * Method for displaying background layout.
+     */
+    fun open(withAnimation: Boolean = true) {
+        if (dropState == DropState.OPEN) return
         dropState = DropState.OPEN
-        if (backLayout != null && frontLayout != null) {
-            drawDropState(frontLayout!!, backLayout!!, withAnimation)
-        } else {
-            throw IllegalArgumentException("Toolbar and backContainer must be initialized")
-        }
+        backdropLayoutsController.drawDropState(DropState.OPEN, withAnimation)
         backdropListenerController.notify(DropState.OPEN)
-        true
     }
 
-    fun close(withAnimation: Boolean = true): Boolean = if (dropState == DropState.CLOSE) {
-        false
-    } else {
+    /**
+     * Method for hiding background layout below foreground
+     */
+    fun close(withAnimation: Boolean = true) {
+        if (dropState == DropState.CLOSE) return
         dropState = DropState.CLOSE
-        if (backLayout != null && frontLayout != null) {
-            drawDropState(frontLayout!!, backLayout!!, withAnimation)
-        } else {
-            throw IllegalArgumentException("Toolbar and backContainer must be initialized")
-        }
+        backdropLayoutsController.drawDropState(DropState.CLOSE, withAnimation)
         backdropListenerController.notify(DropState.CLOSE)
-        true
-    }
-
-    private fun initViews(parent: CoordinatorLayout, frontLayout: View, backLayout: View) {
-        frontLayout.layoutParams.height = parent.height - calculateTopPosition(backLayout).toInt()
-        drawDropState(frontLayout, backLayout, false)
-
-        needToInitializing = false
-    }
-
-    private fun drawDropState(frontLayout: View, backContainer: View, withAnimation: Boolean = true) {
-        when (dropState) {
-            DropState.CLOSE -> {
-                drawClosedState(frontLayout, backContainer, withAnimation)
-//                toolbar.setNavigationIcon(closedIconId)
-            }
-            DropState.OPEN -> {
-                drawOpenedState(frontLayout, backContainer, withAnimation)
-//                toolbar.setNavigationIcon(openedIconRes)
-            }
-        }
-    }
-
-    private fun drawClosedState(frontLayout: View, backLayout: View, withAnimation: Boolean = true) {
-        val position = calculateTopPosition(backLayout)
-        val duration = if (withAnimation) DEFAULT_DURATION else WITHOUT_DURATION
-
-        frontLayout.animate().y(position).setDuration(duration).start()
-    }
-
-    private fun drawOpenedState(frontLayout: View, backLayout: View, withAnimation: Boolean = true) {
-        val position = calculateBottomPosition(backLayout)
-        val duration = if (withAnimation) DEFAULT_DURATION else WITHOUT_DURATION
-
-        frontLayout.animate().y(position).setDuration(duration).start()
-    }
-
-    private fun calculateTopPosition(backLayout: View): Float {
-        return backLayout.y
-    }
-
-    private fun calculateBottomPosition(backLayout: View): Float {
-        return backLayout.y + backLayout.height - 200
     }
 }
-
