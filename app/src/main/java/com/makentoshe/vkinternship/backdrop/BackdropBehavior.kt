@@ -6,8 +6,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.View.NO_ID
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.makentoshe.vkinternship.backdrop.BackdropBehavior.DropState.CLOSE
-import com.makentoshe.vkinternship.backdrop.BackdropBehavior.DropState.OPEN
 
 /**
  * Main class imitates really backdrop layout using [CoordinatorLayout] and two child layouts.
@@ -67,6 +65,7 @@ class BackdropBehavior(context: Context, attrs: AttributeSet) : CoordinatorLayou
     override fun onRestoreInstanceState(parent: CoordinatorLayout, child: View, state: Parcelable) {
         super.onRestoreInstanceState(parent, child, state)
         dropState = saveRestoreMechanism.onRestore(state)
+        backdropListenerController.notify(dropState)
     }
 
     override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View): Boolean {

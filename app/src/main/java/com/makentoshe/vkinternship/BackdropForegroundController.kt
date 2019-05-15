@@ -38,6 +38,8 @@ class BackdropForegroundController(private val behavior: BackdropBehavior, priva
      * Calls when a foreground layout must be initialized
      */
     fun init(context: Context) {
+        println(behavior.dropState)
+
         initForegroundShow(context)
         initForegroundHide(context)
         behavior.addOnDropListener { state ->
