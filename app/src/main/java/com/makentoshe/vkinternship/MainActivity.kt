@@ -3,10 +3,13 @@ package com.makentoshe.vkinternship
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
+import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +30,33 @@ class MainActivity : AppCompatActivity() {
         folderButton.setOnClickListener {
             if (checkPermissionsGranted()) displayDirectoryChooseDialog() else grantPermissions()
         }
+
+        val coordinatorLayout = findViewById<CoordinatorLayout>(R.id.activity_main_coordinator)
+        val behavior = coordinatorLayout.getBackdropBehavior()
+        val foreground = findViewById<View>(R.id.activity_main_foreground)
+        val background = findViewById<View>(R.id.activity_main_background)
+
+        with(behavior) {
+
+            // Attach your back layout to behavior.
+            // BackDropBehavior will find the toolbar itself.
+            attachBackLayout(R.id.activity_main_background)
+
+            // Add listener
+            addOnDropListener {
+                println(it)
+            }
+        }
+
+        foreground.setOnClickListener {
+            behavior.open(true)
+        }
+
+        background.setOnClickListener {
+            behavior.close(true)
+        }
+
+        println("SAS")
     }
 
     private fun grantPermissions() {
@@ -84,4 +114,20 @@ class MainActivity : AppCompatActivity() {
     private fun displayPlayerActivity(directory: File) {
         //TODO
     }
+}
+
+fun CoordinatorLayout.getBackdropBehavior(): BackdropBehavior {
+    val backgroundChild = getChildAt(0)
+    val foregroundChild = getChildAt(1)
+    val params = foregroundChild.layoutParams as CoordinatorLayout.LayoutParams
+    val behavior = params.behavior as BackdropBehavior
+    behavior.setLayouts(foregroundChild, backgroundChild)
+    return behavior
+}
+
+fun <T : CoordinatorLayout.Behavior<*>> View.findBehavior(): T = layoutParams.run {
+    if (this !is CoordinatorLayout.LayoutParams) throw IllegalArgumentException("View's layout params should be CoordinatorLayout.LayoutParams")
+
+    (layoutParams as CoordinatorLayout.LayoutParams).behavior as? T
+        ?: throw IllegalArgumentException("Layout's behavior is not current behavior")
 }
