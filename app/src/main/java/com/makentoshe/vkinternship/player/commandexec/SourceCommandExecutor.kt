@@ -19,7 +19,7 @@ class SourceCommandExecutor(
         //start playing
         mediaPlayer.playWhenReady = true
         //send callback - media file
-        callback.send(Commands.FileCommand(file))
+        callback.send(Commands.FileCommand(file).apply { media = mediaPlayer })
         //send callback - playing was started
         callback.send(Commands.PlayCommand)
     }

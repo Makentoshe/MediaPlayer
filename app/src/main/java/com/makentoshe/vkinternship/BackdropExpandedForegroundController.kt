@@ -3,17 +3,16 @@ package com.makentoshe.vkinternship
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import com.google.android.exoplayer2.Player
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
 import java.io.File
-import kotlin.math.roundToInt
 
 /**
  * Controller for the foreground layout while it is expanded
@@ -99,9 +98,7 @@ class BackdropExpandedForegroundController(
                 view.setOnClickListener { playerServiceController.pausePlaying() }
             }
 
-            override fun onNextMedia(file: File) {
-                println(file)
-            }
+            override fun onNextMedia(file: File, player: Player?) = Unit
 
             override fun onPlayerIdle() = Unit
         }

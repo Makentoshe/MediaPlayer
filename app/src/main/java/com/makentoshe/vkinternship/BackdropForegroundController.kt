@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
+import com.google.android.exoplayer2.Player
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
@@ -44,7 +45,7 @@ class BackdropForegroundController(
         controller.addListener(object : PlayerServiceListener {
             override fun onPlayerPause() = Unit
             override fun onPlayerPlay() = Unit
-            override fun onNextMedia(file: File) = Unit
+            override fun onNextMedia(file: File, player: Player?) = Unit
             override fun onPlayerIdle() {
                 foreground.visibility = View.GONE
             }

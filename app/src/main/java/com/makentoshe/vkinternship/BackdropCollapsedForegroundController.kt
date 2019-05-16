@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.google.android.exoplayer2.Player
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
@@ -91,7 +92,7 @@ class BackdropCollapsedForegroundController(
                 view.setOnClickListener { controller.pausePlaying() }
             }
 
-            override fun onNextMedia(file: File) {
+            override fun onNextMedia(file: File, player: Player?) {
                 extractor.extract(file)
 
                 val titleView = foreground.findViewById<TextView>(R.id.activity_main_foreground_hide_title)
