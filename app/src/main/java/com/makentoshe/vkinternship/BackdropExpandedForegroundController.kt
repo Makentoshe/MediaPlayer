@@ -2,7 +2,6 @@ package com.makentoshe.vkinternship
 
 import android.content.Context
 import android.view.View
-import android.widget.ImageView
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.material.card.MaterialCardView
@@ -99,7 +98,7 @@ class BackdropExpandedForegroundController(
         }
 
         private fun bindPlayer(player: Player) {
-            foreground.findViewById<PlayerControlView>(R.id.controller).player = player
+            foreground.findViewById<PlayerControlView>(R.id.activity_main_foreground_show_controller).player = player
         }
     }
 }

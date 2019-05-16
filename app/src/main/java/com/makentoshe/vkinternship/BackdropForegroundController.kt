@@ -50,11 +50,12 @@ class BackdropForegroundController(
             override fun onNextMedia(file: File, player: Player?) = if (player != null) bindPlayer(player) else Unit
             override fun onPlayerIdle() = foreground.setVisibility(View.GONE)
         })
-        Commands.FileCommand(File("")).media?.let{ bindPlayer(it) }
+        Commands.FileCommand(File("")).media?.let { bindPlayer(it) }
     }
 
     private fun bindPlayer(player: Player) {
-        foreground.findViewById<PlayerControlView>(R.id.controller).player = player
+        foreground.findViewById<PlayerControlView>(R.id.activity_main_foreground_show_controller).player = player
+        foreground.findViewById<PlayerControlView>(R.id.activity_main_foreground_hide_controller).player = player
     }
 
     /**
