@@ -42,7 +42,7 @@ class BackdropForegroundController(
         /* special mechanism used after device rotation
            just requests the current player state (play or pause)
            and returns data using broadcast callback. */
-        PlayerServiceController(context).returnPlayerState()
+        PlayerServiceController(context).requestStateCallbacks()
 
         controller.addListener(object : PlayerServiceListener {
             override fun onPlayerPause() = updateLayoutParams()

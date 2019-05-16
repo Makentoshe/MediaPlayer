@@ -42,9 +42,6 @@ class BackdropExpandedForegroundController(
         foreground.findViewById<View>(R.id.activity_main_foreground_show_dropdown).setOnClickListener {
             behavior.open(true)
         }
-        val playerServiceController = PlayerServiceController(context)
-        //controller for the play/pause button
-        PlayPauseButtonController(foreground, playerServiceController).bindController(controller)
     }
 
     /**
@@ -68,37 +65,4 @@ class BackdropExpandedForegroundController(
         override fun onSwipeBottom() = behavior.open(true)
     }
 
-    private class PlayPauseButtonController(
-        private val foreground: View, private val playerServiceController: PlayerServiceController
-    ) {
-
-        init {
-            val player = Commands.FileCommand(File("")).media
-            if (player != null) bindPlayer(player)
-        }
-
-        fun bindController(controller: PlayerServiceListenerController) {
-            controller.addListener(PlayerListener())
-        }
-
-        private inner class PlayerListener : PlayerServiceListener {
-
-            override fun onPlayerPause() {
-            }
-
-            override fun onPlayerPlay() {
-            }
-
-            override fun onNextMedia(file: File, player: Player?) {
-                if (player != null) bindPlayer(player)
-            }
-
-            override fun onPlayerIdle() = Unit
-
-        }
-
-        private fun bindPlayer(player: Player) {
-            foreground.findViewById<PlayerControlView>(R.id.activity_main_foreground_show_controller).player = player
-        }
-    }
 }

@@ -7,6 +7,7 @@ import com.google.android.exoplayer2.ui.DefaultTimeBar
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.makentoshe.vkinternship.Mp3FilesHolder
 import com.makentoshe.vkinternship.player.commandexec.*
+import java.io.File
 
 
 /**
@@ -28,7 +29,7 @@ class PlayerService : Service() {
 
         mediaPlayer.addListener(object : Player.EventListener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                CallbackCommandExecutor(callback).exec(playWhenReady, playbackState)
+                CallbackCommandExecutor(filesHolder, callback).exec(playWhenReady, playbackState)
             }
         })
     }
@@ -71,7 +72,10 @@ class PlayerService : Service() {
         }
         /* Request a current state */
         is Commands.CallbackCommand -> {
-            CallbackCommandExecutor(callback).exec(mediaPlayer)
+            val holder = if (!this::filesHolder.isInitialized) {
+                null
+            } else filesHolder
+            CallbackCommandExecutor(holder, callback).exec(mediaPlayer)
         }
 
         else -> Unit

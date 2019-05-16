@@ -39,6 +39,7 @@ class BackdropCollapsedForegroundController(
             override fun onPlayerPlay() = Unit
             override fun onPlayerIdle() = Unit
             override fun onNextMedia(file: File, player: Player?) {
+                println(file)
                 extractor.extract(file)
 
                 val titleView = foreground.findViewById<TextView>(R.id.activity_main_foreground_hide_title)
