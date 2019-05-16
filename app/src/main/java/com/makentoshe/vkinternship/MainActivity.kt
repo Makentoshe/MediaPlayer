@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -14,11 +13,9 @@ import com.makentoshe.vkinternship.player.PlayerBroadcastReceiver
 
 class MainActivity : AppCompatActivity() {
 
-    private val folderButton by lazy { findViewById<Button>(R.id.get_folder_button) }
-
-    private val foreground by lazy { findViewById<CardView>(R.id.activity_main_foreground) }
-
     private lateinit var foregroundController: BackdropForegroundController
+
+    private lateinit var backgroundController: BackdropBackgroundController
 
     private val playerBroadcastReceiver = PlayerBroadcastReceiver()
 
@@ -26,19 +23,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //foreground layout controller
         val coordinatorLayout = findViewById<CoordinatorLayout>(R.id.activity_main_coordinator)
         val behavior = coordinatorLayout.getBackdropBehavior()
+
+        //foreground layout controller
+        val foreground = findViewById<CardView>(R.id.activity_main_foreground)
         foregroundController = BackdropForegroundController(behavior, foreground, playerBroadcastReceiver)
 
-        //is first creation?
-        if (savedInstanceState == null) foreground.visibility = View.GONE
-
         //background layout controller
-        folderButton.setOnClickListener {
-            //request permission using fragment
-            supportFragmentManager.beginTransaction().add(PermissionFragment(), String()).commit()
-        }
+        val background = findViewById<View>(R.id.activity_main_background)
+        backgroundController = BackdropBackgroundController(behavior, background, supportFragmentManager)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -58,3 +52,4 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(playerBroadcastReceiver)
     }
 }
+
