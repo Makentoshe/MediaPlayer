@@ -27,9 +27,9 @@ class PathResultExtractor(private val foregroundController: BackdropForegroundCo
         }
 
         //start service
-        val controller = PlayerServiceController()
+        val controller = PlayerServiceController(context)
         val file = File(data.getStringExtra(String::class.java.simpleName))
-        controller.selectNewDirectory(context, file)
+        controller.selectNewDirectory(file)
         //update foreground layout
         foregroundController.onUpdate()
     }

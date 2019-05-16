@@ -25,8 +25,6 @@ class BackdropExpandedForegroundController(
 
     private val context = foreground.context
 
-    private val playerServiceController = PlayerServiceController()
-
     /**
      * Main layout displays when the foreground layout is in expanded state.
      */
@@ -53,19 +51,8 @@ class BackdropExpandedForegroundController(
         foreground.findViewById<View>(R.id.activity_main_foreground_show_dropdown).setOnClickListener {
             behavior.open(true)
         }
-        foreground.findViewById<View>(R.id.activity_main_foreground_show_play).setOnClickListener {
-            playerServiceController.pausePlaying(context)
-        }
-
-        controller.addListener(object : PlayerServiceListener{
-            override fun onPlayerPause() {
-                println("Paused")
-            }
-
-            override fun onPlayerPlay() {
-                println("Play")
-            }
-        })
+        //controller for the play/pause button
+        PlayPauseButtonController(foreground).bindController(controller)
     }
 
     /**
@@ -80,11 +67,8 @@ class BackdropExpandedForegroundController(
         (foreground as MaterialCardView).radius = context.dip(16).toFloat()
     }
 
-    private fun Context.dip(dp: Int): Int {
-        return TypedValue
-            .applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics)
-            .roundToInt()
-    }
+    private fun Context.dip(dp: Int) =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).roundToInt()
 
     private class OnSwipeTouchListenerBackdrop(
         context: Context, private val behavior: BackdropBehavior
@@ -93,5 +77,29 @@ class BackdropExpandedForegroundController(
         override fun onSwipeLeft() = Unit
         override fun onSwipeTop() = Unit
         override fun onSwipeBottom() = behavior.open(true)
+    }
+
+    private class PlayPauseButtonController(foreground: View) {
+        private val view = foreground.findViewById<View>(R.id.activity_main_foreground_show_play)
+        private val icon = foreground.findViewById<ImageView>(R.id.activity_main_foreground_show_play_icon)
+        private val context = foreground.context
+        private val playerServiceController = PlayerServiceController(context)
+
+        fun bindController(controller: PlayerServiceListenerController) {
+            controller.addListener(object : PlayerServiceListener {
+                override fun onPlayerPause() = this@PlayPauseButtonController.onPlayerPause()
+                override fun onPlayerPlay() = this@PlayPauseButtonController.onPlayerPlay()
+            })
+        }
+
+        private fun onPlayerPause() {
+            icon.setImageDrawable(context.getDrawable(R.drawable.ic_play_48))
+            view.setOnClickListener { playerServiceController.startPlaying() }
+        }
+
+        private fun onPlayerPlay() {
+            icon.setImageDrawable(context.getDrawable(R.drawable.ic_pause_48))
+            view.setOnClickListener { playerServiceController.pausePlaying() }
+        }
     }
 }
