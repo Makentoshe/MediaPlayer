@@ -72,9 +72,6 @@ class BackdropExpandedForegroundController(
     private class PlayPauseButtonController(
         private val foreground: View, private val playerServiceController: PlayerServiceController
     ) {
-        private val view = foreground.findViewById<View>(R.id.activity_main_foreground_show_play)
-        private val icon = foreground.findViewById<ImageView>(R.id.activity_main_foreground_show_play_icon)
-        private val context = foreground.context
 
         init {
             val player = Commands.FileCommand(File("")).media
@@ -88,13 +85,9 @@ class BackdropExpandedForegroundController(
         private inner class PlayerListener : PlayerServiceListener {
 
             override fun onPlayerPause() {
-                icon.setImageDrawable(context.getDrawable(R.drawable.ic_play_48))
-                view.setOnClickListener { playerServiceController.startPlaying() }
             }
 
             override fun onPlayerPlay() {
-                icon.setImageDrawable(context.getDrawable(R.drawable.ic_pause_48))
-                view.setOnClickListener { playerServiceController.pausePlaying() }
             }
 
             override fun onNextMedia(file: File, player: Player?) {

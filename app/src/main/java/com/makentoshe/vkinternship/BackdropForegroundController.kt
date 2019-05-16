@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerControlView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.player.Commands
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
@@ -43,13 +45,16 @@ class BackdropForegroundController(
         PlayerServiceController(context).returnPlayerState()
 
         controller.addListener(object : PlayerServiceListener {
-            override fun onPlayerPause() = Unit
-            override fun onPlayerPlay() = Unit
-            override fun onNextMedia(file: File, player: Player?) = Unit
-            override fun onPlayerIdle() {
-                foreground.visibility = View.GONE
-            }
+            override fun onPlayerPause() = updateLayoutParams()
+            override fun onPlayerPlay() = updateLayoutParams()
+            override fun onNextMedia(file: File, player: Player?) = if (player != null) bindPlayer(player) else Unit
+            override fun onPlayerIdle() = foreground.setVisibility(View.GONE)
         })
+        Commands.FileCommand(File("")).media?.let{ bindPlayer(it) }
+    }
+
+    private fun bindPlayer(player: Player) {
+        foreground.findViewById<PlayerControlView>(R.id.controller).player = player
     }
 
     /**

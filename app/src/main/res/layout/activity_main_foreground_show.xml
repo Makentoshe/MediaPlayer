@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main_foreground_show"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,8 +33,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="19dp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_main_foreground_show_play"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_main_foreground_show_repeat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -41,74 +42,8 @@
             android:id="@+id/controller"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:controller_layout_id="@layout/activity_main_foreground_show_controller"
             app:show_timeout="0" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/activity_main_foreground_show_prev"
-        android:layout_width="82dp"
-        android:layout_height="72dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/activity_main_foreground_show_play">
-
-        <ImageView
-            android:id="@+id/activity_main_foreground_show_prev_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_skip_previous_48"
-            android:tint="@color/MaterialLightBlue700"
-            android:tintMode="src_atop" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/activity_main_foreground_show_play"
-        android:layout_width="82dp"
-        android:layout_height="72dp"
-        android:layout_marginBottom="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center"
-            app:cardBackgroundColor="@color/MaterialLightBlue700"
-            app:cardCornerRadius="36dp">
-
-            <ImageView
-                android:id="@+id/activity_main_foreground_show_play_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_pause_48" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/activity_main_foreground_show_next"
-        android:layout_width="82dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/activity_main_foreground_show_play">
-
-        <ImageView
-            android:id="@+id/activity_main_foreground_show_next_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_skip_next_48"
-            android:tint="@color/MaterialLightBlue700"
-            android:tintMode="src_atop" />
 
     </FrameLayout>
 
