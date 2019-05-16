@@ -51,8 +51,13 @@ class BackdropExpandedForegroundController(
         foreground.findViewById<View>(R.id.activity_main_foreground_show_dropdown).setOnClickListener {
             behavior.open(true)
         }
+        val playerServiceController = PlayerServiceController(context)
         //controller for the play/pause button
-        PlayPauseButtonController(foreground).bindController(controller)
+        PlayPauseButtonController(foreground, playerServiceController).bindController(controller)
+        //controller for the skip to a next media button
+        SkipNextButtonController(foreground).bindController(controller)
+        //controller for the return to a preview media button
+        SkipPrevButtonController(foreground).bindController(controller)
     }
 
     /**
@@ -76,11 +81,12 @@ class BackdropExpandedForegroundController(
         override fun onSwipeBottom() = behavior.open(true)
     }
 
-    private class PlayPauseButtonController(foreground: View) {
+    private class PlayPauseButtonController(
+        foreground: View, private val playerServiceController: PlayerServiceController
+    ) {
         private val view = foreground.findViewById<View>(R.id.activity_main_foreground_show_play)
         private val icon = foreground.findViewById<ImageView>(R.id.activity_main_foreground_show_play_icon)
         private val context = foreground.context
-        private val playerServiceController = PlayerServiceController(context)
 
         fun bindController(controller: PlayerServiceListenerController) {
             controller.addListener(PlayerListener())
@@ -101,6 +107,36 @@ class BackdropExpandedForegroundController(
             override fun onNextMedia(file: File, player: Player?) = Unit
 
             override fun onPlayerIdle() = Unit
+        }
+    }
+
+    private class SkipNextButtonController(foreground: View) {
+        private val view = foreground.findViewById<View>(R.id.activity_main_foreground_show_next)
+        private val icon = foreground.findViewById<ImageView>(R.id.activity_main_foreground_show_next_icon)
+        private val context = foreground.context
+
+        init {
+            val color = ContextCompat.getColor(context, R.color.MaterialLightBlue700)
+            icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
+
+        fun bindController(controller: PlayerServiceListenerController) {
+
+        }
+    }
+
+    private class SkipPrevButtonController(foreground: View) {
+        private val view = foreground.findViewById<View>(R.id.activity_main_foreground_show_prev)
+        private val icon = foreground.findViewById<ImageView>(R.id.activity_main_foreground_show_prev_icon)
+        private val context = foreground.context
+
+        init {
+            val color = ContextCompat.getColor(context, R.color.MaterialLightBlue700)
+            icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
+
+        fun bindController(controller: PlayerServiceListenerController) {
+
         }
     }
 }
