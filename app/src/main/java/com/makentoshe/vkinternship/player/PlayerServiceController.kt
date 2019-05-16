@@ -12,6 +12,18 @@ class PlayerServiceController(private val context: Context) {
         context.startService(intent)
     }
 
+    fun selectNextFile() {
+        val intent = Intent(context, PlayerService::class.java)
+        intent.putExtra(Commands::class.java.simpleName, Commands.NextCommand)
+        context.startService(intent)
+    }
+
+    fun selectPrevFile() {
+        val intent = Intent(context, PlayerService::class.java)
+        intent.putExtra(Commands::class.java.simpleName, Commands.PrevCommand)
+        context.startService(intent)
+    }
+
     /**
      * Method calls a PlayerService to return a current player state using broadcast callbacks.
      */

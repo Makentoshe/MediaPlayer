@@ -27,23 +27,27 @@ class Mp3FilesHolder(directory: File) {
      * Returns the next file
      */
     val next: File
-        get() {
-            //put current file to the end of the queue
-            dequeue.addLast(current)
-            //get file from the head of the queue
-            current = dequeue.removeFirst()
-            return current
-        }
+        get() = dequeue.first
+
+    fun listToNext(): File {
+        //put current file to the end of the queue
+        dequeue.addLast(current)
+        //get file from the head of the queue
+        current = dequeue.removeFirst()
+        return current
+    }
 
     /**
      * Returns the previous file
      */
     val prev: File
-        get() {
-            //put current file to the head of the queue
-            dequeue.addFirst(current)
-            //get file from the tail of the queue
-            current = dequeue.removeLast()
-            return current
-        }
+        get() = dequeue.last
+
+    fun listToPrev(): File {
+        //put current file to the head of the queue
+        dequeue.addFirst(current)
+        //get file from the tail of the queue
+        current = dequeue.removeLast()
+        return current
+    }
 }

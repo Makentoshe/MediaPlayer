@@ -1,12 +1,12 @@
 package com.makentoshe.vkinternship
 
 import android.content.Context
+import android.media.MediaMetadataRetriever
 import android.view.View
+import android.widget.TextView
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
-import com.makentoshe.vkinternship.player.Commands
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
@@ -38,10 +38,33 @@ class BackdropExpandedForegroundController(
     }
 
     init {
+        val serviceController = PlayerServiceController(context)
+
         //set on click listener for dropdown arrow
         foreground.findViewById<View>(R.id.activity_main_foreground_show_dropdown).setOnClickListener {
             behavior.open(true)
         }
+        val extractor = MetadataExtractor(MediaMetadataRetriever())
+        controller.addListener(object : PlayerServiceListener {
+            override fun onPlayerPause() = Unit
+            override fun onPlayerPlay() = Unit
+            override fun onPlayerIdle() = Unit
+            override fun onNextMedia(file: File, player: Player?) {
+                extractor.extract(file)
+
+                val authorView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_author)
+                extractor.setAuthor(authorView)
+
+                val titleView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_title)
+                extractor.setTitle(titleView)
+            }
+        })
+
+        val nextButton = primaryLayout.findViewById<View>(R.id.activity_main_foreground_show_next)
+        nextButton.setOnClickListener { serviceController.selectNextFile() }
+
+        val prevButton = primaryLayout.findViewById<View>(R.id.activity_main_foreground_show_prev_icon)
+        prevButton.setOnClickListener { serviceController.selectPrevFile() }
     }
 
     /**
@@ -64,5 +87,4 @@ class BackdropExpandedForegroundController(
         override fun onSwipeTop() = Unit
         override fun onSwipeBottom() = behavior.open(true)
     }
-
 }

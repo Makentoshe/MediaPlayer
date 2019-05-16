@@ -7,7 +7,7 @@ import com.makentoshe.vkinternship.player.CallbackSender
 
 class PlayCommandExecutor(mp3FilesHolder: Mp3FilesHolder, callback: CallbackSender) : CommandExecutor {
 
-    private val sourceExecutor = SourceCommandExecutor(mp3FilesHolder, callback)
+    private val sourceExecutor = SourceCommandExecutor(mp3FilesHolder.current, callback)
 
     override fun exec(mediaPlayer: ExoPlayer) {
         //if media file playing was ended

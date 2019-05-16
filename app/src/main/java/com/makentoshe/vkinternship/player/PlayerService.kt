@@ -3,11 +3,8 @@ package com.makentoshe.vkinternship.player
 import android.app.Service
 import android.content.Intent
 import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.ui.DefaultTimeBar
-import com.google.android.exoplayer2.ui.PlayerControlView
 import com.makentoshe.vkinternship.Mp3FilesHolder
 import com.makentoshe.vkinternship.player.commandexec.*
-import java.io.File
 
 
 /**
@@ -52,7 +49,7 @@ class PlayerService : Service() {
         /* A new playlist added */
         is Commands.SourceCommand -> {
             filesHolder = Mp3FilesHolder(command.directory)
-            SourceCommandExecutor(filesHolder, callback).exec(mediaPlayer)
+            SourceCommandExecutor(filesHolder.current, callback).exec(mediaPlayer)
         }
         /* Start playing */
         is Commands.PlayCommand -> {
@@ -64,17 +61,15 @@ class PlayerService : Service() {
         }
         /* Next element */
         is Commands.NextCommand -> {
-            NextCommandExecutor().exec(mediaPlayer)
+            NextCommandExecutor(filesHolder, callback).exec(mediaPlayer)
         }
         /* Prev element */
         is Commands.PrevCommand -> {
-            PrevCommandExecutor().exec(mediaPlayer)
+            PrevCommandExecutor(filesHolder, callback).exec(mediaPlayer)
         }
         /* Request a current state */
         is Commands.CallbackCommand -> {
-            val holder = if (!this::filesHolder.isInitialized) {
-                null
-            } else filesHolder
+            val holder = if (!this::filesHolder.isInitialized) null else filesHolder
             CallbackCommandExecutor(holder, callback).exec(mediaPlayer)
         }
 

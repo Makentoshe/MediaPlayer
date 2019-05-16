@@ -1,17 +1,14 @@
 package com.makentoshe.vkinternship.player.commandexec
 
 import com.google.android.exoplayer2.ExoPlayer
-import com.makentoshe.vkinternship.Mp3FilesHolder
 import com.makentoshe.vkinternship.player.ByteArrayMediaSourceFactory
 import com.makentoshe.vkinternship.player.CallbackSender
 import com.makentoshe.vkinternship.player.Commands
+import java.io.File
 
-class SourceCommandExecutor(
-    private val filesHolder: Mp3FilesHolder, private val callback: CallbackSender
-) : CommandExecutor {
+class SourceCommandExecutor(private val file: File, private val callback: CallbackSender) : CommandExecutor {
 
     override fun exec(mediaPlayer: ExoPlayer) {
-        val file = filesHolder.current
         //create mediasource from byte array
         val mediaSource = ByteArrayMediaSourceFactory(file.readBytes()).build()
         //put source to the player

@@ -24,11 +24,13 @@ class MetadataExtractor(private val metadataRetriever: MediaMetadataRetriever) {
 
     fun setCover(coverView: ImageView) {
         val bytes = metadataRetriever.embeddedPicture ?: return
-        val bitmap = RoundedBitmapDrawableFactory.create(
-            Resources.getSystem(),
-            ByteArrayInputStream(bytes)
-        )
+        val bitmap = RoundedBitmapDrawableFactory.create(Resources.getSystem(), ByteArrayInputStream(bytes))
         bitmap.cornerRadius = coverView.context.dip(6).toFloat()
         coverView.setImageBitmap(bitmap.bitmap)
+    }
+
+    fun setAuthor(textView: TextView) {
+        val artist = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+        textView.text = artist
     }
 }
