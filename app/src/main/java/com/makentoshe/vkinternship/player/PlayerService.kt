@@ -5,6 +5,7 @@ import android.content.Intent
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.STATE_ENDED
 import com.makentoshe.vkinternship.Mp3FilesHolder
 import com.makentoshe.vkinternship.player.commandexec.*
 
