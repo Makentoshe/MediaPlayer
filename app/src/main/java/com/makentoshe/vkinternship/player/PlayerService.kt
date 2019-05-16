@@ -3,6 +3,7 @@ package com.makentoshe.vkinternship.player
 import android.app.Service
 import android.content.Intent
 import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ui.DefaultTimeBar
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.makentoshe.vkinternship.Mp3FilesHolder
 import com.makentoshe.vkinternship.player.commandexec.*

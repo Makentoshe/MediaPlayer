@@ -23,7 +23,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_dropdown_24" />
+            android:src="@drawable/ic_dropdown_24"
+            android:tint="@android:color/black"
+            android:tintMode="src_atop" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_main_foreground_show_play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.exoplayer2.ui.PlayerControlView
+            android:id="@+id/controller"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:show_timeout="0" />
 
     </FrameLayout>
 
@@ -31,8 +49,8 @@
         android:id="@+id/activity_main_foreground_show_prev"
         android:layout_width="82dp"
         android:layout_height="72dp"
-        android:layout_marginBottom="64dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/activity_main_foreground_show_play">
 
@@ -41,7 +59,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_skip_previous_48" />
+            android:src="@drawable/ic_skip_previous_48"
+            android:tint="@color/MaterialLightBlue700"
+            android:tintMode="src_atop" />
 
     </FrameLayout>
 
@@ -55,20 +75,19 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.card.MaterialCardView
-            app:cardCornerRadius="36dp"
-            app:cardBackgroundColor="@color/MaterialLightBlue700"
-            android:layout_gravity="center"
             android:layout_width="72dp"
-            android:layout_height="72dp">
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@color/MaterialLightBlue700"
+            app:cardCornerRadius="36dp">
 
             <ImageView
-                android:layout_gravity="center"
                 android:id="@+id/activity_main_foreground_show_play_icon"
-                android:src="@drawable/ic_pause_48"
                 android:layout_width="48dp"
-                android:layout_height="48dp" />
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_pause_48" />
 
-            
         </com.google.android.material.card.MaterialCardView>
 
     </FrameLayout>
@@ -77,8 +96,8 @@
         android:id="@+id/activity_main_foreground_show_next"
         android:layout_width="82dp"
         android:layout_height="72dp"
-        android:layout_marginBottom="64dp"
         android:layout_marginStart="24dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/activity_main_foreground_show_play">
 
@@ -87,7 +106,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_skip_next_48" />
+            android:src="@drawable/ic_skip_next_48"
+            android:tint="@color/MaterialLightBlue700"
+            android:tintMode="src_atop" />
 
     </FrameLayout>
 
@@ -103,17 +124,16 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            app:cardCornerRadius="20dp"
             android:layout_gravity="center"
-            app:cardBackgroundColor="@color/MaterialLightBlue700">
+            app:cardBackgroundColor="@color/MaterialLightBlue700"
+            app:cardCornerRadius="20dp">
 
             <ImageView
-                android:layout_gravity="center"
                 android:id="@+id/activity_main_foreground_show_shuffle_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_shuffle_24"
-                />
+                android:layout_gravity="center"
+                android:src="@drawable/ic_shuffle_24" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -123,17 +143,19 @@
         android:id="@+id/activity_main_foreground_show_repeat"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:layout_gravity="center"
             android:id="@+id/activity_main_foreground_show_repeat_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_repeat_24" />
+            android:layout_gravity="center"
+            android:src="@drawable/ic_repeat_24"
+            android:tint="@color/MaterialLightBlue700"
+            android:tintMode="src_atop" />
 
     </FrameLayout>
 
