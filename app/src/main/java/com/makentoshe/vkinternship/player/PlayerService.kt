@@ -56,7 +56,7 @@ class PlayerService : Service() {
         }
         /* Start playing */
         is Commands.PlayCommand -> {
-            PlayCommandExecutor().exec(mediaPlayer)
+            PlayCommandExecutor(filesHolder, callback).exec(mediaPlayer)
         }
         /* Pause playing */
         is Commands.PauseCommand -> {
