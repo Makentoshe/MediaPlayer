@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
 
 /**
@@ -28,10 +29,15 @@ class BackdropForegroundController(
     private val collapsedForegroundController = BackdropCollapsedForegroundController(behavior, foreground, controller)
 
     init {
+        val context = foreground.context
         behavior.addOnDropListener { state ->
             if (state == BackdropBehavior.DropState.OPEN) collapsedForegroundController.display()
             if (state == BackdropBehavior.DropState.CLOSE) expandedForegroundController.display()
         }
+        /* special mechanism used after device rotation
+           just requests the current player state (play or pause)
+           and returns data using broadcast callback. */
+        PlayerServiceController(context).returnPlayerState()
     }
 
     /**

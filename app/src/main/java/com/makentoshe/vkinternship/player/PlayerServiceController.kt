@@ -14,13 +14,23 @@ class PlayerServiceController(private val context: Context) {
 
     fun startPlaying() {
         val intent = Intent(context, PlayerService::class.java)
-        intent.putExtra(Commands::class.java.simpleName, Commands.PlayCommand())
+        intent.putExtra(Commands::class.java.simpleName, Commands.PlayCommand)
         context.startService(intent)
     }
 
     fun pausePlaying() {
         val intent = Intent(context, PlayerService::class.java)
-        intent.putExtra(Commands::class.java.simpleName, Commands.PauseCommand())
+        intent.putExtra(Commands::class.java.simpleName, Commands.PauseCommand)
+        context.startService(intent)
+    }
+
+    /**
+     * Method calls a PlayerService to return a current player state using broadcast callback.
+     * Return can be PlayCommand or PauseCommand
+     */
+    fun returnPlayerState() {
+        val intent = Intent(context, PlayerService::class.java)
+        intent.putExtra(Commands::class.java.simpleName, Commands.CallbackCommand)
         context.startService(intent)
     }
 }

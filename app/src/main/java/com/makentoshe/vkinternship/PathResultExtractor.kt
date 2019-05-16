@@ -11,19 +11,21 @@ import java.io.File
  */
 class PathResultExtractor(private val foregroundController: BackdropForegroundController) {
 
-    fun start(context: Context, data: Intent?) {
-        if (data == null || !data.hasExtra(String::class.java.simpleName)) return
+    fun start(context: Context, data: Intent?): Boolean {
+        if (data == null || !data.hasExtra(String::class.java.simpleName)) return false
 
         val directory = File(data.getStringExtra(String::class.java.simpleName))
 
         if (!directory.isDirectory) {
             val message = "Выбраной директории не существует, или она является файлом"
-            return Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            return false
         }
 
         if (!hasAtLeastOneMP3File(directory)) {
             val message = "В выбранной директории отсутствуют mp3 файлы"
-            return Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            return false
         }
 
         //start service
@@ -32,6 +34,7 @@ class PathResultExtractor(private val foregroundController: BackdropForegroundCo
         controller.selectNewDirectory(file)
         //update foreground layout
         foregroundController.onUpdate()
+        return true
     }
 
     private fun hasAtLeastOneMP3File(directory: File): Boolean {
