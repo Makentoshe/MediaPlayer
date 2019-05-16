@@ -6,6 +6,8 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.player.PlayerServiceController
+import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
 
 /**
@@ -34,15 +36,11 @@ class BackdropCollapsedForegroundController(
     }
 
     init {
+        PlayPauseButtonController(foreground).bindController(controller)
         //get color for buttons
         val color = ContextCompat.getColor(context, R.color.MaterialLightBlue700)
-        //set a color filter and a listener for the play/pause button
-        foreground.findViewById<ImageView>(R.id.pause).apply {
-            setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-            setOnClickListener { println("Pause") }
-        }
         //set a color filter and a listener for the skip button
-        foreground.findViewById<ImageView>(R.id.skip).apply {
+        foreground.findViewById<ImageView>(R.id.activity_main_foreground_hide_next_icon).apply {
             setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
             setOnClickListener { println("Skip") }
         }
@@ -58,5 +56,34 @@ class BackdropCollapsedForegroundController(
         secondaryLayout.visibility = View.GONE
         //remove corners
         (foreground as MaterialCardView).radius = 0f
+    }
+
+    private class PlayPauseButtonController(foreground: View) {
+        private val view = foreground.findViewById<View>(R.id.activity_main_foreground_hide_play)
+        private val icon = foreground.findViewById<ImageView>(R.id.activity_main_foreground_hide_play_icon)
+        private val context = foreground.context
+        private val playerServiceController = PlayerServiceController(context)
+
+        init {
+            val color = ContextCompat.getColor(context, R.color.MaterialLightBlue700)
+            icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
+
+        fun bindController(controller: PlayerServiceListenerController) {
+            controller.addListener(object : PlayerServiceListener {
+                override fun onPlayerPause() = this@PlayPauseButtonController.onPlayerPause()
+                override fun onPlayerPlay() = this@PlayPauseButtonController.onPlayerPlay()
+            })
+        }
+
+        private fun onPlayerPause() {
+            icon.setImageDrawable(context.getDrawable(R.drawable.ic_play_48))
+            view.setOnClickListener { playerServiceController.startPlaying() }
+        }
+
+        private fun onPlayerPlay() {
+            icon.setImageDrawable(context.getDrawable(R.drawable.ic_pause_48))
+            view.setOnClickListener { playerServiceController.pausePlaying() }
+        }
     }
 }
