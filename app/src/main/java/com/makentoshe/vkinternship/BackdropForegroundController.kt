@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
+import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
 
 /**
@@ -38,6 +39,14 @@ class BackdropForegroundController(
            just requests the current player state (play or pause)
            and returns data using broadcast callback. */
         PlayerServiceController(context).returnPlayerState()
+
+        controller.addListener(object : PlayerServiceListener {
+            override fun onPlayerPause() = Unit
+            override fun onPlayerPlay() = Unit
+            override fun onPlayerIdle() {
+                foreground.visibility = View.GONE
+            }
+        })
     }
 
     /**

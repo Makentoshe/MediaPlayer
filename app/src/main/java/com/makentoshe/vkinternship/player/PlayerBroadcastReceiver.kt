@@ -26,6 +26,7 @@ class PlayerBroadcastReceiver : BroadcastReceiver(), PlayerServiceListenerContro
         when (command) {
             is Commands.PlayCommand -> listeners.forEach { it.onPlayerPlay() }
             is Commands.PauseCommand -> listeners.forEach { it.onPlayerPause() }
+            is Commands.IdleStateCommand -> listeners.forEach { it.onPlayerIdle() }
         }
     }
 }

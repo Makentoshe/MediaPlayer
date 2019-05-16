@@ -14,9 +14,7 @@ import com.makentoshe.vkinternship.player.PlayerServiceListenerController
  * Controller for the foreground layout while it is collapsed.
  */
 class BackdropCollapsedForegroundController(
-    private val behavior: BackdropBehavior,
-    private val foreground: View,
-    controller: PlayerServiceListenerController
+    private val behavior: BackdropBehavior, private val foreground: View, controller: PlayerServiceListenerController
 ) {
 
     private val context = foreground.context
@@ -70,20 +68,22 @@ class BackdropCollapsedForegroundController(
         }
 
         fun bindController(controller: PlayerServiceListenerController) {
-            controller.addListener(object : PlayerServiceListener {
-                override fun onPlayerPause() = this@PlayPauseButtonController.onPlayerPause()
-                override fun onPlayerPlay() = this@PlayPauseButtonController.onPlayerPlay()
-            })
+            controller.addListener(PlayerListener())
         }
 
-        private fun onPlayerPause() {
-            icon.setImageDrawable(context.getDrawable(R.drawable.ic_play_48))
-            view.setOnClickListener { playerServiceController.startPlaying() }
-        }
+        private inner class PlayerListener : PlayerServiceListener {
 
-        private fun onPlayerPlay() {
-            icon.setImageDrawable(context.getDrawable(R.drawable.ic_pause_48))
-            view.setOnClickListener { playerServiceController.pausePlaying() }
+            override fun onPlayerPause() {
+                icon.setImageDrawable(context.getDrawable(R.drawable.ic_play_48))
+                view.setOnClickListener { playerServiceController.startPlaying() }
+            }
+
+            override fun onPlayerPlay() {
+                icon.setImageDrawable(context.getDrawable(R.drawable.ic_pause_48))
+                view.setOnClickListener { playerServiceController.pausePlaying() }
+            }
+
+            override fun onPlayerIdle() = Unit
         }
     }
 }

@@ -5,7 +5,7 @@ import java.io.Serializable
 
 sealed class Commands: Serializable {
 
-    data class NewCommand(val directory: File): Commands()
+    data class SourceCommand(val directory: File): Commands()
     object PlayCommand : Commands()
     object PauseCommand : Commands()
     object NextCommand : Commands()
@@ -13,4 +13,9 @@ sealed class Commands: Serializable {
 
     /** Command for requesting a current player state */
     object CallbackCommand : Commands()
+
+    /**
+     * A Callback-Command indicates that the player has not any media to play
+     */
+    object IdleStateCommand: Commands()
 }

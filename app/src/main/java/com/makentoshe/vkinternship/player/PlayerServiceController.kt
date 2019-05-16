@@ -8,7 +8,7 @@ class PlayerServiceController(private val context: Context) {
 
     fun selectNewDirectory(directory: File) {
         val intent = Intent(context, PlayerService::class.java)
-        intent.putExtra(Commands::class.java.simpleName, Commands.NewCommand(directory))
+        intent.putExtra(Commands::class.java.simpleName, Commands.SourceCommand(directory))
         context.startService(intent)
     }
 

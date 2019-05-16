@@ -11,7 +11,12 @@ interface PlayerServiceListener {
     fun onPlayerPause()
 
     /**
-     * Calls when player is playing.
+     * Calls when player is starts playing.
      */
     fun onPlayerPlay()
+
+    /**
+     * Calls when player has not any media to play
+     */
+    fun onPlayerIdle()
 }

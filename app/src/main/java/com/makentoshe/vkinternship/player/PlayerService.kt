@@ -2,16 +2,19 @@ package com.makentoshe.vkinternship.player
 
 import android.app.Service
 import android.content.Intent
-import android.os.IBinder
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.Player
 import com.makentoshe.vkinternship.Mp3FilesHolder
+import com.makentoshe.vkinternship.player.commandexec.*
 
 
 /**
  * Service for starting and holding audio player.
  */
 class PlayerService : Service() {
+
+    private val callback = CallbackSender(this)
 
     /**
      * Contains all audio files.
@@ -22,6 +25,12 @@ class PlayerService : Service() {
 
     override fun onCreate() {
         mediaPlayer = ExoPlayerFactory.newSimpleInstance(this)
+
+        mediaPlayer.addListener(object : Player.EventListener {
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                CallbackCommandExecutor(callback).exec(playWhenReady, playbackState)
+            }
+        })
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -32,86 +41,41 @@ class PlayerService : Service() {
         }
         //extract command
         val command = intent.getSerializableExtra(Commands::class.java.simpleName) as Commands
-        //execute command
-        when (command) {
-            /* A new playlist added */
-            is Commands.NewCommand -> onNewCommand(command)
-            /* Start playing */
-            is Commands.PlayCommand -> onPlayCommand(command)
-            /* Pause playing */
-            is Commands.PauseCommand -> onPauseCommand(command)
-            /* Next element */
-            is Commands.NextCommand -> onNextCommand()
-            /* Prev element */
-            is Commands.PrevCommand -> onPrevCommand()
-            /* Request a current state */
-            is Commands.CallbackCommand -> onCallbackCommand()
-        }
+
+        execute(command)
 
         return super.onStartCommand(intent, flags, startId)
     }
 
-    override fun onBind(intent: Intent?) = null
-
-    /**
-     * Extracts media files from directory and starts to play a first file.
-     */
-    private fun onNewCommand(command: Commands.NewCommand) {
-        //extract files
-        filesHolder = Mp3FilesHolder(command.directory)
-        //get current(first) file bytes
-        val bytes = filesHolder.current.readBytes()
-        //create mediasource from byte array
-        val mediaSource = ByteArrayMediaSourceFactory(bytes).build()
-        //put source to the player
-        mediaPlayer.prepare(mediaSource)
-        //start playing
-        mediaPlayer.playWhenReady = true
-        //send callback - playing was started
-        sendCallback(Commands.PlayCommand)
-    }
-
-    /**
-     * Starts playing and return a callback
-     */
-    private fun onPlayCommand(command: Commands.PlayCommand) {
-        mediaPlayer.playWhenReady = true
-        sendCallback(command)
-    }
-
-    /**
-     * Pauses playing and return a callback
-     */
-    private fun onPauseCommand(command: Commands.PauseCommand) {
-        mediaPlayer.playWhenReady = false
-        sendCallback(command)
-    }
-
-    private fun onNextCommand() {
-        println("Next")
-    }
-
-    private fun onPrevCommand() {
-        println("Prev")
-    }
-
-    /**
-     * Check a current state and returns it callback
-     */
-    private fun onCallbackCommand() {
-        if (mediaPlayer.playWhenReady) {
-            sendCallback(Commands.PlayCommand)
-        } else {
-            sendCallback(Commands.PauseCommand)
+    private fun execute(command: Commands) = when (command) {
+        /* A new playlist added */
+        is Commands.SourceCommand -> {
+            filesHolder = Mp3FilesHolder(command.directory)
+            SourceCommandExecutor(filesHolder, callback).exec(mediaPlayer)
         }
+        /* Start playing */
+        is Commands.PlayCommand -> {
+            PlayCommandExecutor().exec(mediaPlayer)
+        }
+        /* Pause playing */
+        is Commands.PauseCommand -> {
+            PauseCommandExecutor().exec(mediaPlayer)
+        }
+        /* Next element */
+        is Commands.NextCommand -> {
+            NextCommandExecutor().exec(mediaPlayer)
+        }
+        /* Prev element */
+        is Commands.PrevCommand -> {
+            PrevCommandExecutor().exec(mediaPlayer)
+        }
+        /* Request a current state */
+        is Commands.CallbackCommand -> {
+            CallbackCommandExecutor(callback).exec(mediaPlayer)
+        }
+
+        else -> Unit
     }
 
-    /**
-     * Send a [commands] callback to the [PlayerBroadcastReceiver].
-     */
-    private fun sendCallback(commands: Commands) {
-        val intent = Intent(Commands::class.java.simpleName)
-        intent.putExtra(Commands::class.java.simpleName, commands)
-        sendBroadcast(intent)
-    }
+    override fun onBind(intent: Intent?) = null
 }
