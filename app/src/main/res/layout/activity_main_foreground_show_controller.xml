@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toStartOf="@+id/materialCardView">
 
         <ImageView
-            android:id="@+id/exo_prev"
+            android:id="@+id/activity_main_foreground_show_prev_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
@@ -76,7 +76,7 @@
         app:layout_constraintStart_toEndOf="@id/materialCardView">
 
         <ImageView
-            android:id="@+id/exo_next"
+            android:id="@+id/activity_main_foreground_show_next_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"

@@ -90,7 +90,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:id="@+id/exo_next"
+            android:id="@+id/activity_main_foreground_hide_next_icon"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_gravity="center"
