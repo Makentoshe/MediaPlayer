@@ -12,6 +12,7 @@ import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
+import java.io.File
 import kotlin.math.roundToInt
 
 /**
@@ -67,9 +68,6 @@ class BackdropExpandedForegroundController(
         (foreground as MaterialCardView).radius = context.dip(16).toFloat()
     }
 
-    private fun Context.dip(dp: Int) =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).roundToInt()
-
     private class OnSwipeTouchListenerBackdrop(
         context: Context, private val behavior: BackdropBehavior
     ) : OnSwipeTouchListener(context) {
@@ -99,6 +97,10 @@ class BackdropExpandedForegroundController(
             override fun onPlayerPlay() {
                 icon.setImageDrawable(context.getDrawable(R.drawable.ic_pause_48))
                 view.setOnClickListener { playerServiceController.pausePlaying() }
+            }
+
+            override fun onNextMedia(file: File) {
+                println(file)
             }
 
             override fun onPlayerIdle() = Unit

@@ -1,5 +1,7 @@
 package com.makentoshe.vkinternship.player
 
+import java.io.File
+
 /**
  * Listener for player events.
  */
@@ -19,4 +21,9 @@ interface PlayerServiceListener {
      * Calls when player has not any media to play
      */
     fun onPlayerIdle()
+
+    /**
+     * Calls when a new media file was started to play
+     */
+    fun onNextMedia(file: File)
 }

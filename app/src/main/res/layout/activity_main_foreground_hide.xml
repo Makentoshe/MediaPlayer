@@ -8,13 +8,18 @@
     app:layout_constraintRight_toRightOf="parent">
 
     <FrameLayout
-        android:id="@+id/activity_main_foreground_hide_album"
+        android:id="@+id/activity_main_foreground_hide_cover"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        
+        <ImageView
+            android:id="@+id/activity_main_foreground_hide_cover_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
 
     </FrameLayout>
 
@@ -28,7 +33,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/activity_main_foreground_hide_time"
-        app:layout_constraintStart_toEndOf="@+id/activity_main_foreground_hide_album"
+        app:layout_constraintStart_toEndOf="@+id/activity_main_foreground_hide_cover"
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout

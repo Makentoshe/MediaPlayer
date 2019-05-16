@@ -9,6 +9,7 @@ import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
+import java.io.File
 
 /**
  * Controller for the foreground layout of the backdrop layout
@@ -43,6 +44,7 @@ class BackdropForegroundController(
         controller.addListener(object : PlayerServiceListener {
             override fun onPlayerPause() = Unit
             override fun onPlayerPlay() = Unit
+            override fun onNextMedia(file: File) = Unit
             override fun onPlayerIdle() {
                 foreground.visibility = View.GONE
             }

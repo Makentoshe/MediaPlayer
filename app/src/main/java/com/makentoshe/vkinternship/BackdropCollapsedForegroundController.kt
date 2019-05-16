@@ -1,14 +1,17 @@
 package com.makentoshe.vkinternship
 
 import android.graphics.PorterDuff
+import android.media.MediaMetadataRetriever
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
+import java.io.File
 
 /**
  * Controller for the foreground layout while it is collapsed.
@@ -34,7 +37,9 @@ class BackdropCollapsedForegroundController(
     }
 
     init {
-        PlayPauseButtonController(foreground).bindController(controller)
+        val playerServiceController = PlayerServiceController(context)
+        val extractor = MetadataExtractor(MediaMetadataRetriever())
+        PlayPauseButtonController(foreground, extractor, playerServiceController).bindController(controller)
         //get color for buttons
         val color = ContextCompat.getColor(context, R.color.MaterialLightBlue700)
         //set a color filter and a listener for the skip button
@@ -56,11 +61,14 @@ class BackdropCollapsedForegroundController(
         (foreground as MaterialCardView).radius = 0f
     }
 
-    private class PlayPauseButtonController(foreground: View) {
+    private class PlayPauseButtonController(
+        private val foreground: View,
+        private val extractor: MetadataExtractor,
+        private val controller: PlayerServiceController
+    ) {
         private val view = foreground.findViewById<View>(R.id.activity_main_foreground_hide_play)
         private val icon = foreground.findViewById<ImageView>(R.id.activity_main_foreground_hide_play_icon)
         private val context = foreground.context
-        private val playerServiceController = PlayerServiceController(context)
 
         init {
             val color = ContextCompat.getColor(context, R.color.MaterialLightBlue700)
@@ -75,12 +83,22 @@ class BackdropCollapsedForegroundController(
 
             override fun onPlayerPause() {
                 icon.setImageDrawable(context.getDrawable(R.drawable.ic_play_48))
-                view.setOnClickListener { playerServiceController.startPlaying() }
+                view.setOnClickListener { controller.startPlaying() }
             }
 
             override fun onPlayerPlay() {
                 icon.setImageDrawable(context.getDrawable(R.drawable.ic_pause_48))
-                view.setOnClickListener { playerServiceController.pausePlaying() }
+                view.setOnClickListener { controller.pausePlaying() }
+            }
+
+            override fun onNextMedia(file: File) {
+                extractor.extract(file)
+
+                val titleView = foreground.findViewById<TextView>(R.id.activity_main_foreground_hide_title)
+                extractor.setTitle(titleView)
+
+                val coverView = foreground.findViewById<ImageView>(R.id.activity_main_foreground_hide_cover_image)
+                extractor.setCover(coverView)
             }
 
             override fun onPlayerIdle() = Unit

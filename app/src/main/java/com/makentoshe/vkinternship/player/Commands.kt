@@ -18,4 +18,7 @@ sealed class Commands: Serializable {
      * A Callback-Command indicates that the player has not any media to play
      */
     object IdleStateCommand: Commands()
+
+    /** A callback-command returns a current media file */
+    data class FileCommand(val file: File): Commands()
 }

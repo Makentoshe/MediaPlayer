@@ -11,14 +11,15 @@ class SourceCommandExecutor(
 ) : CommandExecutor {
 
     override fun exec(mediaPlayer: ExoPlayer) {
-        //get current(first) file bytes
-        val bytes = filesHolder.current.readBytes()
+        val file = filesHolder.current
         //create mediasource from byte array
-        val mediaSource = ByteArrayMediaSourceFactory(bytes).build()
+        val mediaSource = ByteArrayMediaSourceFactory(file.readBytes()).build()
         //put source to the player
         mediaPlayer.prepare(mediaSource)
         //start playing
         mediaPlayer.playWhenReady = true
+        //send callback - media file
+        callback.send(Commands.FileCommand(file))
         //send callback - playing was started
         callback.send(Commands.PlayCommand)
     }
