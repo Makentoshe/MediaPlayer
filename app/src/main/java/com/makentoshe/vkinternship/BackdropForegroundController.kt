@@ -8,7 +8,7 @@ import androidx.core.view.updateLayoutParams
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.makentoshe.vkinternship.backdrop.BackdropBehavior
-import com.makentoshe.vkinternship.player.Commands
+import com.makentoshe.vkinternship.player.PlayerService
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
@@ -44,13 +44,9 @@ class BackdropForegroundController(
            and returns data using broadcast callback. */
         PlayerServiceController(context).requestStateCallbacks()
 
-        controller.addListener(object : PlayerServiceListener {
-            override fun onPlayerPause() = updateLayoutParams()
-            override fun onPlayerPlay() = updateLayoutParams()
-            override fun onNextMedia(file: File, player: Player?) = if (player != null) bindPlayer(player) else Unit
-            override fun onPlayerIdle() = foreground.setVisibility(View.GONE)
-        })
-        Commands.FileCommand(File("")).media?.let { bindPlayer(it) }
+        controller.addListener(ForegroundServiceListener())
+
+        PlayerService.mediaPlayer?.let { bindPlayer(it) }
     }
 
     private fun bindPlayer(player: Player) {
@@ -78,6 +74,13 @@ class BackdropForegroundController(
         val point = Point()
         (foreground.context as AppCompatActivity).windowManager.defaultDisplay.getSize(point)
         height = point.y
+    }
+
+    private inner class ForegroundServiceListener: PlayerServiceListener {
+        override fun onPlayerPause() = updateLayoutParams()
+        override fun onPlayerPlay() = updateLayoutParams()
+        override fun onNextMedia(file: File) = PlayerService.mediaPlayer?.let { bindPlayer(it) } ?: Unit
+        override fun onPlayerIdle() = foreground.setVisibility(View.GONE)
     }
 
 }

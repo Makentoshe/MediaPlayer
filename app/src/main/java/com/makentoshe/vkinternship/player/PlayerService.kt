@@ -24,6 +24,8 @@ class PlayerService : Service() {
     override fun onCreate() {
         mediaPlayer = ExoPlayerFactory.newSimpleInstance(this)
 
+        Companion.mediaPlayer = mediaPlayer
+
         mediaPlayer.addListener(object : Player.EventListener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 CallbackCommandExecutor(filesHolder, callback).exec(playWhenReady, playbackState)
@@ -77,4 +79,13 @@ class PlayerService : Service() {
     }
 
     override fun onBind(intent: Intent?) = null
+
+    override fun onDestroy() {
+        Companion.mediaPlayer = null
+        mediaPlayer.release()
+    }
+
+    companion object {
+        var mediaPlayer: Player? = null
+    }
 }

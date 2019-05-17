@@ -16,7 +16,7 @@ class SourceCommandExecutor(private val file: File, private val callback: Callba
         //start playing
         mediaPlayer.playWhenReady = true
         //send callback - media file
-        callback.send(Commands.FileCommand(file).apply { media = mediaPlayer })
+        callback.send(Commands.FileCommand(file))
         //send callback - playing was started
         callback.send(Commands.PlayCommand)
     }

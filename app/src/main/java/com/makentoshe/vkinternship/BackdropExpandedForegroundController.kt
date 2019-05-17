@@ -49,7 +49,7 @@ class BackdropExpandedForegroundController(
             override fun onPlayerPause() = Unit
             override fun onPlayerPlay() = Unit
             override fun onPlayerIdle() = Unit
-            override fun onNextMedia(file: File, player: Player?) {
+            override fun onNextMedia(file: File) {
                 extractor.extract(file)
 
                 val authorView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_author)

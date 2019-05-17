@@ -1,6 +1,5 @@
 package com.makentoshe.vkinternship.player
 
-import com.google.android.exoplayer2.Player
 import java.io.File
 
 /**
@@ -26,5 +25,5 @@ interface PlayerServiceListener {
     /**
      * Calls when a new media file was started to play
      */
-    fun onNextMedia(file: File, player: Player?)
+    fun onNextMedia(file: File)
 }

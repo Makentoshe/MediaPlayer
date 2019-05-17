@@ -1,6 +1,5 @@
 package com.makentoshe.vkinternship.player
 
-import com.google.android.exoplayer2.ExoPlayer
 import java.io.File
 import java.io.Serializable
 
@@ -21,14 +20,5 @@ sealed class Commands : Serializable {
     object IdleStateCommand : Commands()
 
     /** A callback-command returns a current media file and contains a media player instance */
-    data class FileCommand(val file: File) : Commands() {
-
-        var media: ExoPlayer?
-            get() = Companion.media
-            set(value) { Companion.media = value }
-
-        companion object {
-            internal var media: ExoPlayer? = null
-        }
-    }
+    data class FileCommand(val file: File) : Commands()
 }
