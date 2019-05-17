@@ -1,4 +1,4 @@
-package com.makentoshe.vkinternship.backdrop
+package com.makentoshe.vkinternship.layout.backdrop
 
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout

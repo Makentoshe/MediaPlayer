@@ -4,9 +4,8 @@ import android.media.MediaMetadataRetriever
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.exoplayer2.Player
 import com.google.android.material.card.MaterialCardView
-import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.layout.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController

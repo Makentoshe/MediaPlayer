@@ -4,12 +4,13 @@ import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.view.View
 import android.widget.TextView
-import com.google.android.exoplayer2.Player
 import com.google.android.material.card.MaterialCardView
-import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.layout.CustomTimeBar
+import com.makentoshe.vkinternship.layout.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
 import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
+import com.makentoshe.vkinternship.player.SimplePlayerServiceListener
 import java.io.File
 
 /**
@@ -44,27 +45,19 @@ class BackdropExpandedForegroundController(
         foreground.findViewById<View>(R.id.activity_main_foreground_show_dropdown).setOnClickListener {
             behavior.open(true)
         }
+
         val extractor = MetadataExtractor(MediaMetadataRetriever())
-        controller.addListener(object : PlayerServiceListener {
-            override fun onPlayerPause() = Unit
-            override fun onPlayerPlay() = Unit
-            override fun onPlayerIdle() = Unit
-            override fun onNextMedia(file: File) {
-                extractor.extract(file)
-
-                val authorView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_author)
-                extractor.setAuthor(authorView)
-
-                val titleView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_title)
-                extractor.setTitle(titleView)
-            }
-        })
+        controller.addListener(ExpandedPlayerServiceListener(primaryLayout, extractor))
 
         val nextButton = primaryLayout.findViewById<View>(R.id.activity_main_foreground_show_next)
         nextButton.setOnClickListener { serviceController.selectNextFile() }
 
         val prevButton = primaryLayout.findViewById<View>(R.id.activity_main_foreground_show_prev_icon)
         prevButton.setOnClickListener { serviceController.selectPrevFile() }
+
+        foreground.findViewById<CustomTimeBar>(R.id.exo_progress).addPositionChangedListener {
+            println(it)
+        }
     }
 
     /**
@@ -82,9 +75,22 @@ class BackdropExpandedForegroundController(
     private class OnSwipeTouchListenerBackdrop(
         context: Context, private val behavior: BackdropBehavior
     ) : OnSwipeTouchListener(context) {
-        override fun onSwipeRight() = Unit
-        override fun onSwipeLeft() = Unit
-        override fun onSwipeTop() = Unit
         override fun onSwipeBottom() = behavior.open(true)
+    }
+
+    private class ExpandedPlayerServiceListener(
+        private val primaryLayout: View,
+        private val extractor: MetadataExtractor
+    ): SimplePlayerServiceListener() {
+
+        override fun onNextMedia(file: File) {
+            extractor.extract(file)
+
+            val authorView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_author)
+            extractor.setAuthor(authorView)
+
+            val titleView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_title)
+            extractor.setTitle(titleView)
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.makentoshe.vkinternship.backdrop
+package com.makentoshe.vkinternship.layout.backdrop
 
 import android.os.Bundle
 import android.os.Parcelable

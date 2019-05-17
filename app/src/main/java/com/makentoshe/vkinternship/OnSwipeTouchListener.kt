@@ -13,17 +13,15 @@ abstract class OnSwipeTouchListener(ctx: Context) : OnTouchListener {
 
     override fun onTouch(v: View, event: MotionEvent) = gestureDetector.onTouchEvent(event)
 
-    abstract fun onSwipeRight()
-    abstract fun onSwipeLeft()
-    abstract fun onSwipeTop()
-    abstract fun onSwipeBottom()
+    open fun onSwipeRight() = Unit
+    open fun onSwipeLeft() = Unit
+    open fun onSwipeTop() = Unit
+    open fun onSwipeBottom() = Unit
 }
 
 class GestureListener(private val onSwipeTouchListener: OnSwipeTouchListener) : SimpleOnGestureListener() {
 
-    override fun onDown(e: MotionEvent): Boolean {
-        return true
-    }
+    override fun onDown(e: MotionEvent) = true
 
     override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
         var result = false
@@ -32,19 +30,11 @@ class GestureListener(private val onSwipeTouchListener: OnSwipeTouchListener) : 
             val diffX = e2.x - e1.x
             if (Math.abs(diffX) > Math.abs(diffY)) {
                 if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffX > 0) {
-                        onSwipeTouchListener.onSwipeRight()
-                    } else {
-                        onSwipeTouchListener.onSwipeLeft()
-                    }
+                    if (diffX > 0) onSwipeTouchListener.onSwipeRight() else onSwipeTouchListener.onSwipeLeft()
                     result = true
                 }
             } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                if (diffY > 0) {
-                    onSwipeTouchListener.onSwipeBottom()
-                } else {
-                    onSwipeTouchListener.onSwipeTop()
-                }
+                if (diffY > 0) onSwipeTouchListener.onSwipeBottom() else onSwipeTouchListener.onSwipeTop()
                 result = true
             }
         } catch (exception: Exception) {

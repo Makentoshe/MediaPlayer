@@ -3,7 +3,7 @@ package com.makentoshe.vkinternship
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.FragmentManager
-import com.makentoshe.vkinternship.backdrop.BackdropBehavior
+import com.makentoshe.vkinternship.layout.backdrop.BackdropBehavior
 
 class BackdropBackgroundController(
     private val behavior: BackdropBehavior, private val background: View, private val fragmentManager: FragmentManager

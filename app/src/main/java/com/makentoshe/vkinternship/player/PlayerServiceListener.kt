@@ -27,3 +27,10 @@ interface PlayerServiceListener {
      */
     fun onNextMedia(file: File)
 }
+
+abstract class SimplePlayerServiceListener: PlayerServiceListener {
+    override fun onPlayerPause() = Unit
+    override fun onPlayerPlay() = Unit
+    override fun onPlayerIdle() = Unit
+    override fun onNextMedia(file: File) = Unit
+}

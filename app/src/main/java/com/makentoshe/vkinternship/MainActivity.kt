@@ -7,7 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.makentoshe.vkinternship.backdrop.getBackdropBehavior
+import com.makentoshe.vkinternship.layout.backdrop.getBackdropBehavior
 import com.makentoshe.vkinternship.player.Commands
 import com.makentoshe.vkinternship.player.PlayerBroadcastReceiver
 

@@ -1,4 +1,4 @@
-package com.makentoshe.vkinternship.backdrop
+package com.makentoshe.vkinternship.layout.backdrop
 
 /**
  * Class for management backdrop events.
