@@ -27,7 +27,7 @@ class PlayerBroadcastReceiver : BroadcastReceiver(), PlayerServiceListenerContro
             is Commands.PlayCommand -> listeners.forEach { it.onPlayerPlay() }
             is Commands.PauseCommand -> listeners.forEach { it.onPlayerPause() }
             is Commands.IdleStateCommand -> listeners.forEach { it.onPlayerIdle() }
-            is Commands.FileCommand -> listeners.forEach { it.onNextMedia(command.file) }
+            is Commands.FileCommand -> listeners.forEach { it.onNextMedia(command.prev, command.file, command.next) }
         }
     }
 }

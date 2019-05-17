@@ -2,9 +2,14 @@ package com.makentoshe.vkinternship.player
 
 import android.app.Service
 import android.content.Intent
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.Player
 import com.makentoshe.vkinternship.Mp3FilesHolder
-import com.makentoshe.vkinternship.player.commandexec.*
+import com.makentoshe.vkinternship.player.commandexec.CallbackCommandExecutor
+import com.makentoshe.vkinternship.player.commandexec.NextCommandExecutor
+import com.makentoshe.vkinternship.player.commandexec.PrevCommandExecutor
+import com.makentoshe.vkinternship.player.commandexec.SourceCommandExecutor
 
 
 /**
@@ -28,7 +33,9 @@ class PlayerService : Service() {
 
         mediaPlayer.addListener(object : Player.EventListener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                CallbackCommandExecutor(filesHolder, callback).exec(playWhenReady, playbackState)
+                if (playWhenReady) callback.send(Commands.PlayCommand) else callback.send(Commands.PauseCommand)
+                if (playbackState == Player.STATE_IDLE) callback.send(Commands.IdleStateCommand)
+                if (playbackState == Player.STATE_ENDED) callback.send(Commands.PauseCommand)
             }
         })
     }
@@ -51,7 +58,7 @@ class PlayerService : Service() {
         /* A new playlist added */
         is Commands.SourceCommand -> {
             filesHolder = Mp3FilesHolder(command.directory)
-            SourceCommandExecutor(filesHolder.current, callback).exec(mediaPlayer)
+            SourceCommandExecutor(filesHolder.prev, filesHolder.current, filesHolder.next, callback).exec(mediaPlayer)
         }
         /* Next element */
         is Commands.NextCommand -> {

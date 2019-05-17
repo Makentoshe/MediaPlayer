@@ -4,7 +4,9 @@ import android.content.res.Resources
 import android.media.MediaMetadataRetriever
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.graphics.drawable.toBitmap
 import java.io.ByteArrayInputStream
 import java.io.File
 
@@ -23,10 +25,15 @@ class MetadataExtractor(private val metadataRetriever: MediaMetadataRetriever) {
     }
 
     fun setCover(coverView: ImageView) {
-        val bytes = metadataRetriever.embeddedPicture ?: return
-        val bitmap = RoundedBitmapDrawableFactory.create(Resources.getSystem(), ByteArrayInputStream(bytes))
-        bitmap.cornerRadius = coverView.context.dip(6).toFloat()
-        coverView.setImageBitmap(bitmap.bitmap)
+        val bytes = metadataRetriever.embeddedPicture
+        val drawable = if (bytes != null) {
+            RoundedBitmapDrawableFactory.create(Resources.getSystem(), ByteArrayInputStream(bytes))
+        } else {
+            val bitmap = ContextCompat.getDrawable(coverView.context, R.mipmap.ic_launcher)!!.toBitmap()
+            RoundedBitmapDrawableFactory.create(Resources.getSystem(), bitmap)
+        }
+        drawable.cornerRadius = coverView.context.dip(6).toFloat()
+        coverView.setImageDrawable(drawable)
     }
 
     fun setAuthor(textView: TextView) {

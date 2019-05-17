@@ -79,7 +79,7 @@ class BackdropForegroundController(
     private inner class ForegroundServiceListener: PlayerServiceListener {
         override fun onPlayerPause() = updateLayoutParams()
         override fun onPlayerPlay() = updateLayoutParams()
-        override fun onNextMedia(file: File) = PlayerService.mediaPlayer?.let { bindPlayer(it) } ?: Unit
+        override fun onNextMedia(prev: File, curr: File, next: File) = PlayerService.mediaPlayer?.let { bindPlayer(it) } ?: Unit
         override fun onPlayerIdle() = foreground.setVisibility(View.GONE)
     }
 

@@ -6,7 +6,9 @@ import com.makentoshe.vkinternship.player.CallbackSender
 
 class PrevCommandExecutor(private val holder: Mp3FilesHolder, private val callback: CallbackSender) : CommandExecutor {
     override fun exec(mediaPlayer: ExoPlayer) {
-        val file = holder.listToPrev()
-        SourceCommandExecutor(file, callback).exec(mediaPlayer)
+        val current = holder.listToPrev()
+        val prev = holder.prev
+        val next = holder.next
+        SourceCommandExecutor(prev, current, next, callback).exec(mediaPlayer)
     }
 }

@@ -25,12 +25,12 @@ interface PlayerServiceListener {
     /**
      * Calls when a new media file was started to play
      */
-    fun onNextMedia(file: File)
+    fun onNextMedia(prev: File, curr: File, next: File)
 }
 
 abstract class SimplePlayerServiceListener: PlayerServiceListener {
     override fun onPlayerPause() = Unit
     override fun onPlayerPlay() = Unit
     override fun onPlayerIdle() = Unit
-    override fun onNextMedia(file: File) = Unit
+    override fun onNextMedia(prev: File, curr: File, next: File) = Unit
 }

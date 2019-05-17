@@ -11,13 +11,9 @@ class CallbackCommandExecutor(
 ) : CommandExecutor {
 
     override fun exec(mediaPlayer: ExoPlayer) {
-        exec(mediaPlayer.playWhenReady, mediaPlayer.playbackState)
-    }
-
-    fun exec(isPlaying: Boolean, state: Int) {
-        if (isPlaying) callback.send(Commands.PlayCommand) else callback.send(Commands.PauseCommand)
-        if (state == Player.STATE_IDLE) callback.send(Commands.IdleStateCommand)
-        if (state == Player.STATE_ENDED) callback.send(Commands.PauseCommand)
-        if (holder != null) callback.send(Commands.FileCommand(holder.current))
+        if (mediaPlayer.playWhenReady) callback.send(Commands.PlayCommand) else callback.send(Commands.PauseCommand)
+        if (mediaPlayer.playbackState == Player.STATE_IDLE) callback.send(Commands.IdleStateCommand)
+        if (mediaPlayer.playbackState == Player.STATE_ENDED) callback.send(Commands.PauseCommand)
+        if (holder != null) callback.send(Commands.FileCommand(holder.prev, holder.current, holder.next))
     }
 }

@@ -60,8 +60,8 @@ class BackdropCollapsedForegroundController(
     private class CollapsedPlayerServiceListener(
         private val primaryLayout: View, private val extractor: MetadataExtractor
     ) : SimplePlayerServiceListener() {
-        override fun onNextMedia(file: File) {
-            extractor.extract(file)
+        override fun onNextMedia(prev: File, curr: File, next: File) {
+            extractor.extract(curr)
 
             val titleView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_hide_title)
             extractor.setTitle(titleView)

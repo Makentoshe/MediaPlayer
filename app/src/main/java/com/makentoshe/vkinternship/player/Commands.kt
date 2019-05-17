@@ -20,5 +20,5 @@ sealed class Commands : Serializable {
     object IdleStateCommand : Commands()
 
     /** A callback-command returns a current media file and contains a media player instance */
-    data class FileCommand(val file: File) : Commands()
+    data class FileCommand(val prev: File, val file: File, val next: File) : Commands()
 }
