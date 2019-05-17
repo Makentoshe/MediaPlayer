@@ -53,14 +53,6 @@ class PlayerService : Service() {
             filesHolder = Mp3FilesHolder(command.directory)
             SourceCommandExecutor(filesHolder.current, callback).exec(mediaPlayer)
         }
-        /* Start playing */
-        is Commands.PlayCommand -> {
-            PlayCommandExecutor(filesHolder, callback).exec(mediaPlayer)
-        }
-        /* Pause playing */
-        is Commands.PauseCommand -> {
-            PauseCommandExecutor().exec(mediaPlayer)
-        }
         /* Next element */
         is Commands.NextCommand -> {
             NextCommandExecutor(filesHolder, callback).exec(mediaPlayer)
