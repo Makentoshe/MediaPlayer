@@ -9,7 +9,7 @@ class BackdropBackgroundController(
     private val behavior: BackdropBehavior, private val background: View, private val fragmentManager: FragmentManager
 ) {
 
-    private val folderButton by lazy { background.findViewById<Button>(R.id.get_folder_button) }
+    private val folderButton by lazy { background.findViewById<Button>(R.id.activity_main_background_button) }
 
     init {
         //background layout controller
