@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.exoplayer2.ui.DefaultTimeBar
+    <com.makentoshe.vkinternship.layout.CustomTimeBar
         android:id="@+id/exo_progress"
         android:layout_width="match_parent"
         android:layout_height="48dp"
