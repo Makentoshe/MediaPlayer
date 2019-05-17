@@ -5,10 +5,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.card.MaterialCardView
+import com.makentoshe.vkinternship.layout.CustomTimeBar
 import com.makentoshe.vkinternship.layout.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
-import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
+import com.makentoshe.vkinternship.player.SimplePlayerServiceListener
 import java.io.File
 
 /**
@@ -34,23 +35,14 @@ class BackdropCollapsedForegroundController(
 
     init {
         val extractor = MetadataExtractor(MediaMetadataRetriever())
-        controller.addListener(object : PlayerServiceListener {
-            override fun onPlayerPause() = Unit
-            override fun onPlayerPlay() = Unit
-            override fun onPlayerIdle() = Unit
-            override fun onNextMedia(file: File) {
-                extractor.extract(file)
-
-                val titleView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_hide_title)
-                extractor.setTitle(titleView)
-
-                val coverView = primaryLayout.findViewById<ImageView>(R.id.activity_main_foreground_hide_cover_image)
-                extractor.setCover(coverView)
-            }
-        })
+        controller.addListener(CollapsedPlayerServiceListener(primaryLayout, extractor))
 
         val nextButton = primaryLayout.findViewById<View>(R.id.activity_main_foreground_hide_next)
         nextButton.setOnClickListener { PlayerServiceController(primaryLayout.context).selectNextFile() }
+
+        val timeView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_hide_time_view)
+        val timeBar = foreground.findViewById<CustomTimeBar>(R.id.exo_progress)
+        RemainedTimeViewController(timeView).bindToTimeBar(timeBar)
     }
 
     /**
@@ -63,5 +55,19 @@ class BackdropCollapsedForegroundController(
         secondaryLayout.visibility = View.GONE
         //remove corners
         (foreground as MaterialCardView).radius = 0f
+    }
+
+    private class CollapsedPlayerServiceListener(
+        private val primaryLayout: View, private val extractor: MetadataExtractor
+    ) : SimplePlayerServiceListener() {
+        override fun onNextMedia(file: File) {
+            extractor.extract(file)
+
+            val titleView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_hide_title)
+            extractor.setTitle(titleView)
+
+            val coverView = primaryLayout.findViewById<ImageView>(R.id.activity_main_foreground_hide_cover_image)
+            extractor.setCover(coverView)
+        }
     }
 }

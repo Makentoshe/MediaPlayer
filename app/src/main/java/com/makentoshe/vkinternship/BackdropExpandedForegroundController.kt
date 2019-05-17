@@ -8,7 +8,6 @@ import com.google.android.material.card.MaterialCardView
 import com.makentoshe.vkinternship.layout.CustomTimeBar
 import com.makentoshe.vkinternship.layout.backdrop.BackdropBehavior
 import com.makentoshe.vkinternship.player.PlayerServiceController
-import com.makentoshe.vkinternship.player.PlayerServiceListener
 import com.makentoshe.vkinternship.player.PlayerServiceListenerController
 import com.makentoshe.vkinternship.player.SimplePlayerServiceListener
 import java.io.File
@@ -55,9 +54,17 @@ class BackdropExpandedForegroundController(
         val prevButton = primaryLayout.findViewById<View>(R.id.activity_main_foreground_show_prev_icon)
         prevButton.setOnClickListener { serviceController.selectPrevFile() }
 
-        foreground.findViewById<CustomTimeBar>(R.id.exo_progress).addPositionChangedListener {
-            println(it)
-        }
+
+        val timeBar = foreground.findViewById<CustomTimeBar>(R.id.exo_progress)
+
+        val remainedTimeView =
+            primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_controller_remainedtime)
+        RemainedTimeViewController(remainedTimeView).bindToTimeBar(timeBar)
+
+        val passedTimeView =
+            primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_controller_passedtime)
+        PassedTimeViewController(passedTimeView).bindToTimeBar(timeBar)
+
     }
 
     /**
@@ -79,9 +86,8 @@ class BackdropExpandedForegroundController(
     }
 
     private class ExpandedPlayerServiceListener(
-        private val primaryLayout: View,
-        private val extractor: MetadataExtractor
-    ): SimplePlayerServiceListener() {
+        private val primaryLayout: View, private val extractor: MetadataExtractor
+    ) : SimplePlayerServiceListener() {
 
         override fun onNextMedia(file: File) {
             extractor.extract(file)

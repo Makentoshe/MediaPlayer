@@ -5,20 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.makentoshe.vkinternship.layout.CustomTimeBar
-        android:id="@+id/exo_progress"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        app:bar_height="3dp"
-        app:buffered_color="@color/UnplayedColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/materialCardView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:played_color="@color/MaterialLightBlue700"
-        app:scrubber_color="@color/MaterialLightBlue700"
-        app:unplayed_color="@color/UnplayedColor" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.makentoshe.vkinternship.layout.CustomTimeBar
+            android:id="@+id/exo_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="15dp"
+            app:bar_height="3dp"
+            app:buffered_color="@color/UnplayedColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:played_color="@color/MaterialLightBlue700"
+            app:scrubber_color="@color/MaterialLightBlue700"
+            app:unplayed_color="@color/UnplayedColor" />
+
+        <TextView
+            android:id="@+id/activity_main_foreground_show_controller_passedtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="00:00"
+            android:gravity="center"
+            android:textColor="@color/MaterialLightBlue700"
+            app:layout_constraintStart_toStartOf="@+id/exo_progress"
+            app:layout_constraintTop_toBottomOf="@+id/exo_progress" />
+
+        <TextView
+            android:id="@+id/activity_main_foreground_show_controller_remainedtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="-00:00"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="@+id/exo_progress"
+            app:layout_constraintTop_toBottomOf="@+id/exo_progress" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
@@ -28,9 +60,10 @@
         android:layout_marginTop="18dp"
         app:cardBackgroundColor="@color/MaterialLightBlue700"
         app:cardCornerRadius="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exo_progress">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <ImageView
             android:id="@+id/exo_pause"
@@ -49,6 +82,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="82dp"
         android:layout_height="72dp"
         android:layout_marginEnd="24dp"
