@@ -35,7 +35,7 @@ class PlayerService : Service() {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 if (playWhenReady) callback.send(Commands.PlayCommand) else callback.send(Commands.PauseCommand)
                 if (playbackState == Player.STATE_IDLE) callback.send(Commands.IdleStateCommand)
-                if (playbackState == Player.STATE_ENDED) callback.send(Commands.PauseCommand)
+                if (playbackState == Player.STATE_ENDED) NextCommandExecutor(filesHolder, callback).exec(mediaPlayer)
             }
         })
     }
