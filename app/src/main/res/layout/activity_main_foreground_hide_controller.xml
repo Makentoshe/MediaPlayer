@@ -7,7 +7,7 @@
     app:layout_constraintRight_toRightOf="parent">
 
     <ImageView
-        android:id="@+id/activity_main_foreground_hide_cover_image"
+        android:id="@+id/activity_main_foreground_hide_album_art"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="6dp"
@@ -28,28 +28,20 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/activity_main_foreground_hide_time"
-        app:layout_constraintStart_toEndOf="@+id/activity_main_foreground_hide_cover_image"
+        app:layout_constraintStart_toEndOf="@+id/activity_main_foreground_hide_album_art"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
+    <TextView
         android:id="@+id/activity_main_foreground_hide_time"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="6dp"
+        android:gravity="center"
+        android:text="00:00"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/activity_main_foreground_hide_play"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/activity_main_foreground_hide_time_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:textSize="12sp"
-            android:text="00:00" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <FrameLayout
         android:id="@+id/activity_main_foreground_hide_play"

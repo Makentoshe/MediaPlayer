@@ -40,7 +40,7 @@ class BackdropCollapsedForegroundController(
         val nextButton = primaryLayout.findViewById<View>(R.id.activity_main_foreground_hide_next)
         nextButton.setOnClickListener { PlayerServiceController(primaryLayout.context).selectNextFile() }
 
-        val timeView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_hide_time_view)
+        val timeView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_hide_time)
         val timeBar = foreground.findViewById<CustomTimeBar>(R.id.exo_progress)
         RemainedTimeViewController(timeView).bindToTimeBar(timeBar)
     }
@@ -66,7 +66,7 @@ class BackdropCollapsedForegroundController(
             val titleView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_hide_title)
             extractor.setTitle(titleView)
 
-            val coverView = primaryLayout.findViewById<ImageView>(R.id.activity_main_foreground_hide_cover_image)
+            val coverView = primaryLayout.findViewById<ImageView>(R.id.activity_main_foreground_hide_album_art)
             extractor.setCover(coverView)
         }
     }
