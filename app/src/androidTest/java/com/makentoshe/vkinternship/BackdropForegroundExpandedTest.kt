@@ -67,7 +67,7 @@ class BackdropForegroundExpandedTest {
         ins2.use { file2.writeBytes(ins2.readBytes()) }
 
         onView(withId(R.id.activity_main_background_button)).perform(click())
-        onView(withId(R.id.dialog_edit_text)).perform(typeText("testdirectory/"))
+        onView(withId(R.id.directory_select_pathview)).perform(typeText("testdirectory/"))
         onView(withId(R.id.dialog_button)).perform(click()).noActivity()
         //pause player
         onView(

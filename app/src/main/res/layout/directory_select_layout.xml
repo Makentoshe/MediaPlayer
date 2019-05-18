@@ -9,8 +9,10 @@
         android:id="@+id/directory_select_pathview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/dialog_edittext_hint"
-        android:inputType="textWebEditText" />
+        android:gravity="center_vertical"
+        android:text="@string/dialog_edittext_hint"
+        android:textColor="@color/MaterialLightBlue700"
+        android:textSize="16sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/dialog_button"
@@ -19,9 +21,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@android:color/transparent"
-        android:text="Найти"
+        android:text="@string/directory_choose"
         android:textColor="@color/MaterialLightBlue700"
         app:strokeColor="@color/MaterialLightBlue700"
         app:strokeWidth="2dp" />
+
+    <ListView
+        android:id="@+id/directory_select_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

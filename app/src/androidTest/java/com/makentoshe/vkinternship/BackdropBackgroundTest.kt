@@ -2,6 +2,7 @@ package com.makentoshe.vkinternship
 
 import android.content.Intent
 import android.os.Environment
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
@@ -16,14 +17,12 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import com.makentoshe.vkinternship.player.PlayerService
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.not
+import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import java.io.File
-import kotlin.random.Random
 
 class BackdropBackgroundTest {
 
@@ -55,11 +54,16 @@ class BackdropBackgroundTest {
     @Test
     fun shouldDisplayMessageWhenDirectoryDoesNotExists() {
         onView(withId(R.id.activity_main_background_button)).perform(click())
-        onView(withId(R.id.dialog_edit_text)).perform(typeText("sas"))
+        onView(withId(R.id.directory_select_pathview)).perform(typeText("sas"))
         onView(withId(R.id.dialog_button)).perform(click()).noActivity()
 
-        onView(withText(R.string.selected_directory_does_not_exist)).inRoot(withDecorView(not(`is`(rule.activity.window.decorView))))
-            .check(matches(isDisplayed()))
+        //init ui automator
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val context = instrumentation.targetContext
+        val device = UiDevice.getInstance(instrumentation)
+
+        //wait for the toast to appear
+        device.wait(Until.hasObject(By.text(context.getString(R.string.selected_directory_does_not_exist))), 2000)
     }
 
     @Test
@@ -71,11 +75,16 @@ class BackdropBackgroundTest {
         file.createNewFile()
 
         onView(withId(R.id.activity_main_background_button)).perform(click())
-        onView(withId(R.id.dialog_edit_text)).perform(typeText("testdirectory/testfile"))
+        onView(withId(R.id.directory_select_pathview)).perform(typeText("testdirectory/testfile"))
         onView(withId(R.id.dialog_button)).perform(click()).noActivity()
 
-        onView(withText(R.string.selected_directory_does_not_exist)).inRoot(withDecorView(not(`is`(rule.activity.window.decorView))))
-            .check(matches(isDisplayed()))
+        //init ui automator
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val context = instrumentation.targetContext
+        val device = UiDevice.getInstance(instrumentation)
+
+        //wait for the toast to appear
+        device.wait(Until.hasObject(By.text(context.getString(R.string.selected_directory_does_not_exist))), 2000)
     }
 
     @Test
@@ -86,7 +95,7 @@ class BackdropBackgroundTest {
         directory!!.mkdirs()
 
         onView(withId(R.id.activity_main_background_button)).perform(click())
-        onView(withId(R.id.dialog_edit_text)).perform(typeText("testdirectory/"))
+        onView(withId(R.id.directory_select_pathview)).perform(typeText("testdirectory/"))
         onView(withId(R.id.dialog_button)).perform(click()).noActivity()
 
         //init ui automator
@@ -113,7 +122,7 @@ class BackdropBackgroundTest {
         ins.use { file.writeBytes(ins.readBytes()) }
 
         onView(withId(R.id.activity_main_background_button)).perform(click())
-        onView(withId(R.id.dialog_edit_text)).perform(typeText("testdirectory/"))
+        onView(withId(R.id.directory_select_pathview)).perform(typeText("testdirectory/"))
         onView(withId(R.id.dialog_button)).perform(click()).noActivity()
 
         onView(withId(R.id.activity_main_foreground)).check(matches(isDisplayed()))
