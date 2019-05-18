@@ -17,14 +17,12 @@ class PathResultExtractor(private val foregroundController: BackdropForegroundCo
         val directory = File(data.getStringExtra(String::class.java.simpleName))
 
         if (!directory.isDirectory) {
-            val message = "Выбраной директории не существует, или она является файлом"
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.selected_directory_does_not_exist, Toast.LENGTH_LONG).show()
             return false
         }
 
         if (!hasAtLeastOneMP3File(directory)) {
-            val message = "В выбранной директории отсутствуют mp3 файлы"
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.selected_directory_is_empty, Toast.LENGTH_LONG).show()
             return false
         }
 

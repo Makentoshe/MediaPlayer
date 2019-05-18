@@ -18,23 +18,23 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingBottom="8dp"
-            android:text="Откуда играть музыку?"
+            android:text="@string/directory_request_question"
             android:textColor="@android:color/black"
-            android:textSize="28dp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Выберите папку с аудиозаписями" />
+            android:text="@string/directory_request_clarification" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/activity_main_background_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/MaterialLightBlue700"
-            android:text="Выбрать папку"
+            android:text="@string/directory_choose"
             android:textColor="@android:color/white"
             app:cornerRadius="8dp"
             android:layout_marginTop="24dp"/>

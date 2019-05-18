@@ -27,7 +27,12 @@ class Mp3FilesHolder(directory: File) {
      * Returns the next file
      */
     val next: File
-        get() = dequeue.first
+        get() = if (dequeue.size == 0) current else try {
+            dequeue.first
+        } catch (e: NoSuchElementException) {
+            dequeue.last
+        }
+
 
     fun listToNext(): File {
         //put current file to the end of the queue
@@ -41,7 +46,11 @@ class Mp3FilesHolder(directory: File) {
      * Returns the previous file
      */
     val prev: File
-        get() = dequeue.last
+        get() = if (dequeue.size == 0) current else try {
+            dequeue.last
+        } catch (e: NoSuchElementException) {
+            dequeue.first
+        }
 
     fun listToPrev(): File {
         //put current file to the head of the queue

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">VkInternship</string>
     <string name="dialog_edittext_hint">/storage/emulated/0/</string>
+    <string name="directory_request_question">Откуда играть музыку?</string>
+    <string name="directory_request_clarification">Выберите папку с аудиозаписями</string>
+    <string name="directory_choose">Выбрать папку</string>
+    <string name="selected_directory_does_not_exist">Выбраной директории не существует или она является файлом</string>
+    <string name="selected_directory_is_empty">В выбранной директории отсутствуют mp3 файлы</string>
 </resources>

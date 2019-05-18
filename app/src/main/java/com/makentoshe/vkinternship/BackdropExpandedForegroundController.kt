@@ -111,7 +111,7 @@ class ExpandedPlayerServiceListener(
     override fun onNextMedia(prev: File, curr: File, next: File) {
         extractor.extract(curr)
 
-        val authorView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_author)
+        val authorView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_artist)
         extractor.setAuthor(authorView)
 
         val titleView = primaryLayout.findViewById<TextView>(R.id.activity_main_foreground_show_title)
