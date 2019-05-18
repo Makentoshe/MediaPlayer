@@ -2,6 +2,7 @@ package com.makentoshe.vkinternship.layout.backdrop
 
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.makentoshe.vkinternship.dip
 
 /**
  * todo add animator class
@@ -63,7 +64,7 @@ class BackdropLayoutsController(private val layouts: BackdropLayouts) {
     private fun drawOpenedState(withAnimation: Boolean = true) {
         val foreground = layouts.foreground
         val background = layouts.background
-        val bottomOffsetPx = 200
+        val bottomOffsetPx = foreground.context.dip(60)
 
         val position = background.y + background.height - bottomOffsetPx
         val duration = if (withAnimation) DEFAULT_DURATION else WITHOUT_DURATION

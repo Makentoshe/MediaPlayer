@@ -32,7 +32,7 @@ class MetadataExtractor(private val metadataRetriever: MediaMetadataRetriever) {
             val bitmap = ContextCompat.getDrawable(coverView.context, R.mipmap.ic_launcher)!!.toBitmap()
             RoundedBitmapDrawableFactory.create(Resources.getSystem(), bitmap)
         }
-        drawable.cornerRadius = coverView.context.dip(6).toFloat()
+        drawable.cornerRadius = coverView.context.dip(12).toFloat()
         coverView.setImageDrawable(drawable)
     }
 
