@@ -10,7 +10,7 @@ class RemainedTimeViewController(private val timeView: TextView) {
 
     fun bindToTimeBar(timeBar: CustomTimeBar) {
         timeBar.addPositionChangedListener { milliseconds ->
-            val player = PlayerService.mediaPlayer ?: return@addPositionChangedListener
+            val player = PlayerService.mediaPlayerRef.get() ?: return@addPositionChangedListener
             val duration = player.duration
             if (duration == C.TIME_UNSET) return@addPositionChangedListener
 

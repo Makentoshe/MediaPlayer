@@ -10,6 +10,7 @@ import com.makentoshe.vkinternship.player.commandexec.CallbackCommandExecutor
 import com.makentoshe.vkinternship.player.commandexec.NextCommandExecutor
 import com.makentoshe.vkinternship.player.commandexec.PrevCommandExecutor
 import com.makentoshe.vkinternship.player.commandexec.SourceCommandExecutor
+import java.lang.ref.WeakReference
 
 
 /**
@@ -29,7 +30,7 @@ class PlayerService : Service() {
     override fun onCreate() {
         mediaPlayer = ExoPlayerFactory.newSimpleInstance(this)
 
-        Companion.mediaPlayer = mediaPlayer
+        mediaPlayerRef = WeakReference(mediaPlayer)
 
         mediaPlayer.addListener(object : Player.EventListener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
@@ -80,11 +81,12 @@ class PlayerService : Service() {
     override fun onBind(intent: Intent?) = null
 
     override fun onDestroy() {
-        Companion.mediaPlayer = null
-        mediaPlayer.release()
+        mediaPlayerRef.get()?.release()
+        mediaPlayerRef.clear()
     }
 
     companion object {
-        var mediaPlayer: Player? = null
+        var mediaPlayerRef = WeakReference<Player>(null)
+            private set
     }
 }

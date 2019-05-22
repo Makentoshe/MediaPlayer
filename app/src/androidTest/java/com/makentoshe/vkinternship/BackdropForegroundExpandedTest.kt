@@ -316,12 +316,12 @@ class BackdropForegroundExpandedTest {
         onView(
             allOf(withId(R.id.exo_play), isDescendantOfA(withId(R.id.activity_main_foreground_show)))
         ).perform(click())
-        assertTrue(PlayerService.mediaPlayer!!.playWhenReady)
+        assertTrue(PlayerService.mediaPlayerRef.get()!!.playWhenReady)
         //pause play
         onView(
             allOf(withId(R.id.exo_pause), isDescendantOfA(withId(R.id.activity_main_foreground_show)))
         ).perform(click())
-        assertFalse(PlayerService.mediaPlayer!!.playWhenReady)
+        assertFalse(PlayerService.mediaPlayerRef.get()!!.playWhenReady)
     }
 
     @Test
